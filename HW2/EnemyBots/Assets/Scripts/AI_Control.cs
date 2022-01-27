@@ -16,7 +16,6 @@ public enum AI_STATE
 	GROUP_BEHAVIOR
 }
 
-
 public class AI_Control : MonoBehaviour 
 {
 	// reference to the PlayerControl - this is our target!
@@ -42,9 +41,6 @@ public class AI_Control : MonoBehaviour
 	public float maxSpeed = 10.0f;
 
 	public float minRadiusArrival = 0.5f;
-
-
-
 
 	// Initialization
 	void Start () 
@@ -81,7 +77,7 @@ public class AI_Control : MonoBehaviour
 		debugCircle.Clear();
 		debugTarget.Clear();
 		debugVelocity.Clear();
-
+		 
 		// switch statement to find new velocity based on the current state
 
 		switch (state) 
@@ -157,10 +153,13 @@ public class AI_Control : MonoBehaviour
 
 	void Seek(Vector3 target)
 	{
-		// TODO: SEEK
+		Vector2 hTarget = target - this.transform.position;
+		Vector2 vDesired = hTarget.normalized * maxSpeed;
+		
+		Vector2 vSteering = vDesired - body.velocity;
+		vSteering = Vector2.ClampMagnitude(vSteering, maxForce);
 
-
-
+		body.velocity += vSteering;
 
 		if (isDebugOn)
 		{
@@ -171,10 +170,13 @@ public class AI_Control : MonoBehaviour
 
 	void Flee(Vector3 target)
 	{
-		// TODO: FLEE
+		Vector2 hTarget = this.transform.position - target;
+		Vector2 vDesired = hTarget.normalized * maxSpeed;
 
+		Vector2 vSteering = vDesired - body.velocity;
+		vSteering = Vector2.ClampMagnitude(vSteering, maxForce);
 
-
+		body.velocity += vSteering;
 
 		if (isDebugOn)
 		{
@@ -185,10 +187,20 @@ public class AI_Control : MonoBehaviour
 
 	void Arrive(Vector3 target)
 	{
-		// TODO: ARRIVE
+		Vector2 hTarget = target - this.transform.position;
+		Vector2 vDesired = hTarget.normalized * maxSpeed;
 
+		float distFromTarget = hTarget.magnitude;
 
+		if (distFromTarget < minRadiusArrival)
+        {
+			vDesired *= (distFromTarget / minRadiusArrival);
+        }
 
+		Vector2 vSteering = vDesired - body.velocity;
+		vSteering = Vector2.ClampMagnitude(vSteering, maxForce);
+
+		body.velocity += vSteering;
 
 		if (isDebugOn)
 		{
@@ -199,25 +211,46 @@ public class AI_Control : MonoBehaviour
 
 	void Pursue()
 	{
-		// TODO: PURSUE
         Vector2 playerPos = player.getPosition2D();
         Vector2 playerVel = player.getVelocity();
 
+		Vector2 target = playerPos + playerVel * (playerPos / maxSpeed);
 
+		Vector2 hTarget = target - (Vector2)this.transform.position;
+		Vector2 vDesired = hTarget.normalized * maxSpeed;
 
+		Vector2 vSteering = vDesired - body.velocity;
+		vSteering = Vector2.ClampMagnitude(vSteering, maxForce);
+
+		body.velocity += vSteering;
 
 		if (isDebugOn)
 		{
+			debugTarget.SetTarget(target);
 			debugVelocity.SetVelocity(body.velocity);
 		}
 	}
 
 	void Evade()
 	{
-		// TODO: EVADE
+		Vector2 playerPos = player.getPosition2D();
+		Vector2 playerVel = player.getVelocity();
 
+		Vector2 target = playerPos + playerVel * (playerPos / maxSpeed);
 
+		Vector2 hTarget = (Vector2)this.transform.position - target;
+		Vector2 vDesired = hTarget.normalized * maxSpeed;
 
+		Vector2 vSteering = vDesired - body.velocity;
+		vSteering = Vector2.ClampMagnitude(vSteering, maxForce);
+
+		body.velocity += vSteering;
+
+		if (isDebugOn)
+		{
+			debugTarget.SetTarget(target);
+			debugVelocity.SetVelocity(body.velocity);
+		}
 
 		if (isDebugOn)
 		{
@@ -227,14 +260,23 @@ public class AI_Control : MonoBehaviour
 
 	void Wander()
 	{
-		// TODO: WANDER
+		float CIRCLE_RADIUS = 0.5f;
+		float CIRCLE_DIST = 3.0f;
 
+		Vector2 circleCenter = body.velocity;// + this.transform.position;
+		circleCenter = circleCenter.normalized * CIRCLE_DIST;
 
+		Vector2 displacement = new Vector2(0, -1);
+		displacement *= CIRCLE_RADIUS;
 
+		Vector2 target = (Vector2)circleCenter;
+		//Seek(target);
 
 		if (isDebugOn)
 		{
+			debugCircle.setCircle((Vector3)circleCenter, CIRCLE_RADIUS);
 			debugVelocity.SetVelocity(body.velocity);
+			debugTarget.SetTarget(target);
 		}
 	}
 
