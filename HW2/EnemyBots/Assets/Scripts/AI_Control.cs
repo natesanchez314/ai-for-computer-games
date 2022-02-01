@@ -113,6 +113,8 @@ public class AI_Control : MonoBehaviour
 				break;
 		}
 
+		ObstacleAvoidance();
+
 		// just in case... clamp the velocity to our max velocity
 		body.velocity = Vector3.ClampMagnitude(body.velocity, maxSpeed);
 
@@ -261,20 +263,23 @@ public class AI_Control : MonoBehaviour
 	void Wander()
 	{
 		float CIRCLE_RADIUS = 0.5f;
-		float CIRCLE_DIST = 3.0f;
+		float CIRCLE_DIST = 0.5f;
 
-		Vector2 circleCenter = body.velocity;// + this.transform.position;
-		circleCenter = circleCenter.normalized * CIRCLE_DIST;
+		Vector3 circleCenter = (Vector3)this.body.velocity;
 
-		Vector2 displacement = new Vector2(0, -1);
-		displacement *= CIRCLE_RADIUS;
+		Vector3 target = circleCenter.normalized * CIRCLE_DIST;
 
-		Vector2 target = (Vector2)circleCenter;
-		//Seek(target);
+		Vector3 displacement = new Vector3(0, -1);
+		float wanderAngle = Vector3.Angle(circleCenter, target);
+		
+		
+
+
+		Seek(target);
 
 		if (isDebugOn)
 		{
-			debugCircle.setCircle((Vector3)circleCenter, CIRCLE_RADIUS);
+			debugCircle.setCircle(circleCenter, CIRCLE_RADIUS);
 			debugVelocity.SetVelocity(body.velocity);
 			debugTarget.SetTarget(target);
 		}
@@ -298,7 +303,38 @@ public class AI_Control : MonoBehaviour
 		// TODO: AVOIDANCE
 		// just because it's not it's own state, doesn't mean we shouldn't also work on avoiding obstacles during all other states
 
-
+		BoxCollider2D box = gameObject.GetComponent<BoxCollider2D>();
+		if (box != null)
+        {
+			Collider2D[] collisions = new Collider2D[5];
+			ContactFilter2D filter = new ContactFilter2D();
+			filter.NoFilter();
+			box.OverlapCollider(filter, collisions);
+			Collider2D closest = null;
+			float closestDist = 0.0f;
+			foreach (Collider2D collision in collisions)
+            {
+				if (collision != null)
+				{
+					if (closest == null)
+                    {
+						closest = collision;
+						closestDist = Vector3.Distance(this.gameObject.transform.position, collision.transform.position);
+                    }
+                    else
+                    {
+						float dist = Vector3.Distance(this.gameObject.transform.position, collision.transform.position);
+						if (dist < closestDist)
+                        {
+							closest = collision;
+							closestDist = dist;
+                        }
+                    }
+				}
+            }
+			if (closest.name != "Player")
+				Flee(closest.transform.position);
+        }
 
 
 		if (isDebugOn)
