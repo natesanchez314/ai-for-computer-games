@@ -297,28 +297,36 @@ public class AI_Control : MonoBehaviour
 	void Hide()
 	{
 		// TODO: HIDE
-		Vector2 playerPos = player.getPosition2D();
-		RaycastHit hit;
-		Vector3 target;
-
-
-
-		if (isDebugOn)
+		GameObject closestSphere = GetClosestSphere();
+		if (closestSphere != null)
 		{
-			//debugTarget.SetTarget(target);
-			debugVelocity.SetVelocity(body.velocity);
+			//Vector3 targetDir = closestSphere.transform.position + (Vector3)player.getPosition2D();
+			//Vector3 hidingSpot = closestSphere.transform.position + targetDir.normalized * (closestSphere.GetComponent<CircleCollider2D>().radius);
+			//Seek(hidingSpot);
+
+			Vector3 target = Vector3.Project(closestSphere.transform.position, player.getPosition2D());
+			Vector3 hidingSpot = (Vector3)closestSphere.transform.position + target.normalized * (closestSphere.GetComponent<CircleCollider2D>().radius + 2);
+
+			Seek(hidingSpot);
+
+			//if (isDebugOn)
+			//{
+			//	debugTarget.SetTarget(hidingSpot);
+			//	debugCircle.setCircle(hidingSpot, 2.0f);
+			//	debugVelocity.SetVelocity(body.velocity);
+			//}
 		}
 	}
 
 	void OnTriggerEnter2D(Collider2D col)
     {
-		Debug.Log("Adding...");
+		//Debug.Log("Adding...");
 		collisions.Add(col);
     }
 
 	void OnTriggerExit2D(Collider2D col)
 	{
-		Debug.Log("Removing...");
+		//Debug.Log("Removing...");
 		collisions.Remove(col);
 	}
 
@@ -326,47 +334,10 @@ public class AI_Control : MonoBehaviour
 	{
 		// TODO: AVOIDANCE
 		// just because it's not it's own state, doesn't mean we shouldn't also work on avoiding obstacles during all other states
-		
-        CircleCollider2D closest = null;
-        float closestDist = 0.0f;
-        foreach (CircleCollider2D collision in collisions)
-        {
-            if (collision != null)
-            {
-                if (closest == null)
-                {
-                    closest = collision;
-                    closestDist = Vector3.Distance(this.gameObject.transform.position, collision.transform.position);
-                }
-                else
-                {
-                    float dist = Vector3.Distance(this.gameObject.transform.position, collision.transform.position);
-                    if (dist < closestDist)
-                    {
-                        closest = collision;
-                        closestDist = dist;
-                    }
-                }
-            }
-        }
 
-		if (closest != null)
-		{
-			Vector3 closestPosition = closest.transform.position;
-			float closestRadius = closest.radius;
-
-			//Vector3 steeringForce = this.transform.position + v;
-			Vector3 brakingForce = Vector3.zero;
-
-			this.body.velocity += (Vector2)(steeringForce + brakingForce);
-		}
-
-		if (isDebugOn)
-		{
-			if (closest != null)
-				Debug.Log("Closest" + closest.name);
-			debugVelocity.SetVelocity(body.velocity);
-		}
+		//SphereAvoidanceMapped();
+		//SphereAvoidance();
+		WallAvoidance();
 	}
 
 	void GroupBehavior()
@@ -382,5 +353,109 @@ public class AI_Control : MonoBehaviour
 		{
 			debugVelocity.SetVelocity(body.velocity);
 		}
+	}
+
+	void SphereAvoidanceMapped()
+	{
+		CircleCollider2D closest = GetClosestSphere().GetComponent<CircleCollider2D>();
+		if (closest != null)
+		{
+			Vector3 headingTarget = (Vector3)this.body.position - closest.transform.position;
+			Vector3 desiredVelocity = headingTarget.normalized * maxSpeed * Vector3.Distance(this.body.position, closest.transform.position);
+			Vector3 brakingForce = desiredVelocity - (Vector3)this.body.velocity;
+			brakingForce = Vector2.ClampMagnitude(brakingForce, maxForce);
+
+			Vector3 steeringForce = Vector3.Cross((Vector3)this.body.velocity, brakingForce);
+			steeringForce = steeringForce.normalized * maxSpeed * closest.radius;
+			//steeringForce = Vector3.ClampMagnitude(steeringForce, maxForce);
+
+			this.body.velocity += (Vector2)(steeringForce + brakingForce);
+
+		}
+	}
+
+	void SphereAvoidance()
+    {
+		CircleCollider2D closest = null;
+		float closestDist = 0.0f;
+		foreach (Collider2D collision in collisions)
+		{
+			if (collision != null && collision)
+			{
+				if (closest == null && collision.GetType() == typeof(CircleCollider2D))
+				{
+					closest = (CircleCollider2D)collision;
+					closestDist = Vector3.Distance(this.gameObject.transform.position, collision.transform.position);
+				}
+				else
+				{
+					float dist = Vector3.Distance(this.gameObject.transform.position, collision.transform.position);
+					if (dist < closestDist)
+					{
+						closest = (CircleCollider2D)collision;
+						closestDist = dist;
+					}
+				}
+			}
+		}
+
+		if (closest != null)
+		{
+			//Vector3 headingTarget = (Vector3)this.body.position - closest.transform.position;
+			//Vector3 desiredVelocity = headingTarget.normalized * maxSpeed * closestDist;
+			//Vector3 brakingForce = desiredVelocity - (Vector3)this.body.velocity;
+			//brakingForce = Vector2.ClampMagnitude(brakingForce, maxForce);
+
+			//Vector3 steeringForce = Vector3.Cross((Vector3)this.body.velocity, brakingForce);
+			//steeringForce = steeringForce.normalized * maxSpeed * closest.radius;
+			////steeringForce = Vector3.ClampMagnitude(steeringForce, maxForce);
+
+			//this.body.velocity += (Vector2)(steeringForce + brakingForce);
+
+			
+
+			Vector3 avoidanceForce = (Vector3)this.body.velocity - closest.transform.position;
+			avoidanceForce = avoidanceForce.normalized * maxForce;
+
+			this.body.velocity += (Vector2)avoidanceForce;
+		}
+
+		if (isDebugOn)
+		{
+			if (closest != null)
+				Debug.Log("Closest" + closest.name);
+			debugVelocity.SetVelocity(body.velocity);
+		}
+	}		
+
+	void WallAvoidance()
+    {
+
+    }
+
+	GameObject GetClosestSphere()
+	{ 
+		GameObject[] spheres = GameObject.FindGameObjectsWithTag("Sphere");
+		GameObject closest = null;
+		float closestDist = 0.0f;
+		foreach (GameObject collision in spheres)
+		{
+			if (closest == null)
+			{
+				closest = collision;
+				closestDist = Vector3.Distance(this.gameObject.transform.position, collision.transform.position);
+			}
+			else
+			{
+				float dist = Vector3.Distance(this.gameObject.transform.position, collision.transform.position);
+				if (dist < closestDist)
+				{
+					closest = collision;
+					closestDist = dist;
+				}
+			}
+		}
+		Debug.Log("Closest: " + closest);
+		return closest;
 	}
 }
