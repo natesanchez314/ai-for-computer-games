@@ -41,6 +41,9 @@ public class AI_Control : MonoBehaviour
 	public float maxSpeed = 10.0f;
 
 	public float minRadiusArrival = 0.5f;
+	List<Collider2D> collisions = new List<Collider2D>();
+	Vector3 wanderDisplacement = new Vector3(1, 0);
+	Vector2 vSteer = Vector2.zero;
 
 	// Initialization
 	void Start () 
@@ -262,22 +265,28 @@ public class AI_Control : MonoBehaviour
 
 	void Wander()
 	{
-		float CIRCLE_RADIUS = 0.5f;
-		float CIRCLE_DIST = 0.5f;
+		float CIRCLE_RADIUS = 1.0f;
+		float CIRCLE_DIST = 3.0f;
+		float ANGLE_CHANGE = 0.5f;
 
-		Vector3 circleCenter = (Vector3)this.body.velocity;
+		//Vector3 circleCenter = this.body.transform.forward + (Vector3)this.body.position;
+		Vector3 circleCenter = this.body.velocity;
+		circleCenter = circleCenter.normalized;
+		circleCenter *= CIRCLE_DIST;
 
-		Vector3 target = circleCenter.normalized * CIRCLE_DIST;
+		float angle = Random.Range(-15.0f, 15.0f);
+		wanderDisplacement = Quaternion.Euler(0, 0, (angle * ANGLE_CHANGE) - (ANGLE_CHANGE * 0.5f)) * wanderDisplacement;
+		wanderDisplacement = wanderDisplacement.normalized * CIRCLE_RADIUS;
+		Vector3 target = circleCenter + wanderDisplacement;
 
-		Vector3 displacement = new Vector3(0, -1);
-		float wanderAngle = Vector3.Angle(circleCenter, target);
-		
-		
+        Vector2 hTarget = target - this.transform.position;
+        Vector2 vDesired = hTarget.normalized * maxSpeed / 2;
+        Vector2 vSteering = vDesired - body.velocity;
+        vSteering = Vector2.ClampMagnitude(vSteering, maxForce);
+        body.velocity += vSteering;
+		vSteer = vSteering;
 
-
-		Seek(target);
-
-		if (isDebugOn)
+        if (isDebugOn)
 		{
 			debugCircle.setCircle(circleCenter, CIRCLE_RADIUS);
 			debugVelocity.SetVelocity(body.velocity);
@@ -288,57 +297,74 @@ public class AI_Control : MonoBehaviour
 	void Hide()
 	{
 		// TODO: HIDE
-
+		Vector2 playerPos = player.getPosition2D();
+		RaycastHit hit;
+		Vector3 target;
 
 
 
 		if (isDebugOn)
 		{
+			//debugTarget.SetTarget(target);
 			debugVelocity.SetVelocity(body.velocity);
 		}
+	}
+
+	void OnTriggerEnter2D(Collider2D col)
+    {
+		Debug.Log("Adding...");
+		collisions.Add(col);
+    }
+
+	void OnTriggerExit2D(Collider2D col)
+	{
+		Debug.Log("Removing...");
+		collisions.Remove(col);
 	}
 
 	void ObstacleAvoidance()
 	{
 		// TODO: AVOIDANCE
 		// just because it's not it's own state, doesn't mean we shouldn't also work on avoiding obstacles during all other states
-
-		BoxCollider2D box = gameObject.GetComponent<BoxCollider2D>();
-		if (box != null)
+		
+        CircleCollider2D closest = null;
+        float closestDist = 0.0f;
+        foreach (CircleCollider2D collision in collisions)
         {
-			Collider2D[] collisions = new Collider2D[5];
-			ContactFilter2D filter = new ContactFilter2D();
-			filter.NoFilter();
-			box.OverlapCollider(filter, collisions);
-			Collider2D closest = null;
-			float closestDist = 0.0f;
-			foreach (Collider2D collision in collisions)
+            if (collision != null)
             {
-				if (collision != null)
-				{
-					if (closest == null)
+                if (closest == null)
+                {
+                    closest = collision;
+                    closestDist = Vector3.Distance(this.gameObject.transform.position, collision.transform.position);
+                }
+                else
+                {
+                    float dist = Vector3.Distance(this.gameObject.transform.position, collision.transform.position);
+                    if (dist < closestDist)
                     {
-						closest = collision;
-						closestDist = Vector3.Distance(this.gameObject.transform.position, collision.transform.position);
+                        closest = collision;
+                        closestDist = dist;
                     }
-                    else
-                    {
-						float dist = Vector3.Distance(this.gameObject.transform.position, collision.transform.position);
-						if (dist < closestDist)
-                        {
-							closest = collision;
-							closestDist = dist;
-                        }
-                    }
-				}
+                }
             }
-			if (closest.name != "Player")
-				Flee(closest.transform.position);
         }
 
+		if (closest != null)
+		{
+			Vector3 closestPosition = closest.transform.position;
+			float closestRadius = closest.radius;
+
+			//Vector3 steeringForce = this.transform.position + v;
+			Vector3 brakingForce = Vector3.zero;
+
+			this.body.velocity += (Vector2)(steeringForce + brakingForce);
+		}
 
 		if (isDebugOn)
 		{
+			if (closest != null)
+				Debug.Log("Closest" + closest.name);
 			debugVelocity.SetVelocity(body.velocity);
 		}
 	}
