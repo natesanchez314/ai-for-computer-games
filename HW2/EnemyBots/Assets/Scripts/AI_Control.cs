@@ -40,7 +40,9 @@ public class AI_Control : MonoBehaviour
 	public float maxForce = 0.2f;
 	public float maxSpeed = 10.0f;
 
-	public float minRadiusArrival = 0.5f;
+	public float minRadiusArrival = 5.0f;
+
+	GameObject[] spheres;
 	List<Collider2D> collisions = new List<Collider2D>();
 	Vector3 wanderDisplacement = new Vector3(1, 0);
 	Vector2 vSteer = Vector2.zero;
@@ -60,6 +62,8 @@ public class AI_Control : MonoBehaviour
 		// start the bot off with a RANDOM DIRECTION at max velocity
 		// --> this of course may be overriden later by state behavior or forces to the rigidbody
 		body.velocity = Random.insideUnitCircle.normalized * maxSpeed;
+
+		spheres = GameObject.FindGameObjectsWithTag("Sphere");
 	}
 
 
@@ -202,6 +206,8 @@ public class AI_Control : MonoBehaviour
 			vDesired *= (distFromTarget / minRadiusArrival);
         }
 
+		vDesired = Vector2.ClampMagnitude(vDesired, maxSpeed);
+
 		Vector2 vSteering = vDesired - body.velocity;
 		vSteering = Vector2.ClampMagnitude(vSteering, maxForce);
 
@@ -216,12 +222,17 @@ public class AI_Control : MonoBehaviour
 
 	void Pursue()
 	{
-        Vector2 playerPos = player.getPosition2D();
-        Vector2 playerVel = player.getVelocity();
+		PursueTarget(player.getPosition2D());
+        
+	}
 
-		Vector2 target = playerPos + playerVel * (playerPos / maxSpeed);
+	private void PursueTarget(Vector2 target)
+    {
+		Vector2 playerVel = player.getVelocity();
 
-		Vector2 hTarget = target - (Vector2)this.transform.position;
+		Vector2 hTarget = target + playerVel * (target / maxSpeed);
+
+		hTarget = hTarget - (Vector2)this.transform.position;
 		Vector2 vDesired = hTarget.normalized * maxSpeed;
 
 		Vector2 vSteering = vDesired - body.velocity;
@@ -238,12 +249,17 @@ public class AI_Control : MonoBehaviour
 
 	void Evade()
 	{
-		Vector2 playerPos = player.getPosition2D();
+		EvadeTarget(player.getPosition2D());
+		
+	}
+
+	private void EvadeTarget(Vector2 target)
+    {
 		Vector2 playerVel = player.getVelocity();
 
-		Vector2 target = playerPos + playerVel * (playerPos / maxSpeed);
+		Vector2 hTarget = target + playerVel * (target / maxSpeed);
 
-		Vector2 hTarget = (Vector2)this.transform.position - target;
+		hTarget = (Vector2)this.transform.position - hTarget;
 		Vector2 vDesired = hTarget.normalized * maxSpeed;
 
 		Vector2 vSteering = vDesired - body.velocity;
@@ -256,25 +272,24 @@ public class AI_Control : MonoBehaviour
 			debugTarget.SetTarget(target);
 			debugVelocity.SetVelocity(body.velocity);
 		}
-
-		if (isDebugOn)
-		{
-			debugVelocity.SetVelocity(body.velocity);
-		}
 	}
 
 	void Wander()
 	{
+		// todo
+		float WANDER_ANGLE = 15.0f;
 		float CIRCLE_RADIUS = 1.0f;
 		float CIRCLE_DIST = 3.0f;
 		float ANGLE_CHANGE = 0.5f;
 
+		Vector3 circleCenter = (Vector3)this.body.velocity;
 		//Vector3 circleCenter = this.body.transform.forward + (Vector3)this.body.position;
-		Vector3 circleCenter = this.body.velocity;
+		//Vector3 circleCenter = this.body.transform.position - (Vector3)this.body.velocity;
+		//Vector3 circleCenter = this.transform.position + Vector3.Project((Vector3)this.body.velocity, this.body.transform.forward);
 		circleCenter = circleCenter.normalized;
 		circleCenter *= CIRCLE_DIST;
 
-		float angle = Random.Range(-15.0f, 15.0f);
+		float angle = Random.Range(-WANDER_ANGLE, WANDER_ANGLE);
 		wanderDisplacement = Quaternion.Euler(0, 0, (angle * ANGLE_CHANGE) - (ANGLE_CHANGE * 0.5f)) * wanderDisplacement;
 		wanderDisplacement = wanderDisplacement.normalized * CIRCLE_RADIUS;
 		Vector3 target = circleCenter + wanderDisplacement;
@@ -296,37 +311,33 @@ public class AI_Control : MonoBehaviour
 
 	void Hide()
 	{
-		// TODO: HIDE
 		GameObject closestSphere = GetClosestSphere();
 		if (closestSphere != null)
 		{
-			//Vector3 targetDir = closestSphere.transform.position + (Vector3)player.getPosition2D();
-			//Vector3 hidingSpot = closestSphere.transform.position + targetDir.normalized * (closestSphere.GetComponent<CircleCollider2D>().radius);
-			//Seek(hidingSpot);
+			float distFromSphere = 3.0f;
+			Vector3 heading = closestSphere.transform.position - (Vector3)player.getPosition2D();
+			heading -= (Vector3)closestSphere.transform.position;
+			heading = heading.normalized;
+			heading *= (distFromSphere + closestSphere.GetComponent<CircleCollider2D>().radius);
 
-			Vector3 target = Vector3.Project(closestSphere.transform.position, player.getPosition2D());
-			Vector3 hidingSpot = (Vector3)closestSphere.transform.position + target.normalized * (closestSphere.GetComponent<CircleCollider2D>().radius + 2);
+			PursueTarget(heading);
+			Arrive(heading);
 
-			Seek(hidingSpot);
-
-			//if (isDebugOn)
-			//{
-			//	debugTarget.SetTarget(hidingSpot);
-			//	debugCircle.setCircle(hidingSpot, 2.0f);
-			//	debugVelocity.SetVelocity(body.velocity);
-			//}
+			if (isDebugOn)
+			{
+				debugTarget.SetTarget(heading);
+				debugVelocity.SetVelocity(body.velocity);
+			}
 		}
 	}
 
 	void OnTriggerEnter2D(Collider2D col)
     {
-		//Debug.Log("Adding...");
 		collisions.Add(col);
     }
 
 	void OnTriggerExit2D(Collider2D col)
 	{
-		//Debug.Log("Removing...");
 		collisions.Remove(col);
 	}
 
@@ -336,7 +347,7 @@ public class AI_Control : MonoBehaviour
 		// just because it's not it's own state, doesn't mean we shouldn't also work on avoiding obstacles during all other states
 
 		//SphereAvoidanceMapped();
-		//SphereAvoidance();
+		SphereAvoidance();
 		WallAvoidance();
 	}
 
@@ -346,14 +357,33 @@ public class AI_Control : MonoBehaviour
 		// rather than performing the logic here, individual bots will likely
 		// get desired behavior from a controller class while in Group Behavior state
 
+		float maxSeparationForce = 0.2f;
+		float maxCohesionForce = 0.2f;
 
-
+		Separation(maxSeparationForce);
+		Alignment();
+			
 
 		if (isDebugOn)
 		{
 			debugVelocity.SetVelocity(body.velocity);
 		}
 	}
+
+	void Separation(float maxSeparationForce)
+    {
+
+    }
+
+	void Alignment()
+    {
+
+    }
+
+	void Cohesion(float maxCohesionForce)
+    {
+
+    }
 
 	void SphereAvoidanceMapped()
 	{
@@ -401,20 +431,18 @@ public class AI_Control : MonoBehaviour
 
 		if (closest != null)
 		{
-			//Vector3 headingTarget = (Vector3)this.body.position - closest.transform.position;
-			//Vector3 desiredVelocity = headingTarget.normalized * maxSpeed * closestDist;
-			//Vector3 brakingForce = desiredVelocity - (Vector3)this.body.velocity;
-			//brakingForce = Vector2.ClampMagnitude(brakingForce, maxForce);
+			Vector3 headingTarget = (Vector3)this.body.position - closest.transform.position;
+			Vector3 desiredVelocity = headingTarget.normalized * maxSpeed * (closestDist / maxSpeed);
+			Vector3 brakingForce = desiredVelocity - (Vector3)this.body.velocity;
+			brakingForce = Vector2.ClampMagnitude(brakingForce, maxForce);
 
-			//Vector3 steeringForce = Vector3.Cross((Vector3)this.body.velocity, brakingForce);
-			//steeringForce = steeringForce.normalized * maxSpeed * closest.radius;
-			////steeringForce = Vector3.ClampMagnitude(steeringForce, maxForce);
+			Vector3 steeringForce = Vector3.Cross((Vector3)this.body.velocity, brakingForce);
+			steeringForce = steeringForce.normalized * maxSpeed * closest.radius;
+			steeringForce = Vector3.ClampMagnitude(steeringForce, maxForce);
 
-			//this.body.velocity += (Vector2)(steeringForce + brakingForce);
+			this.body.velocity += (Vector2)(steeringForce + brakingForce);
 
-			
-
-			Vector3 avoidanceForce = (Vector3)this.body.velocity - closest.transform.position;
+			Vector3 avoidanceForce = closest.transform.position - (Vector3)this.body.velocity;
 			avoidanceForce = avoidanceForce.normalized * maxForce;
 
 			this.body.velocity += (Vector2)avoidanceForce;
@@ -433,9 +461,9 @@ public class AI_Control : MonoBehaviour
 
     }
 
+
 	GameObject GetClosestSphere()
-	{ 
-		GameObject[] spheres = GameObject.FindGameObjectsWithTag("Sphere");
+	{
 		GameObject closest = null;
 		float closestDist = 0.0f;
 		foreach (GameObject collision in spheres)
@@ -455,7 +483,6 @@ public class AI_Control : MonoBehaviour
 				}
 			}
 		}
-		Debug.Log("Closest: " + closest);
 		return closest;
 	}
 }
