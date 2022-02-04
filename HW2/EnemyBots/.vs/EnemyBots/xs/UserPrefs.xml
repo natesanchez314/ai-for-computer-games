@@ -1,14 +1,17 @@
 ﻿<Properties StartupConfiguration="{AC7296F9-8302-80E7-FEF6-AB13BCE207EB}|">
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/AI_Control.cs">
     <Files>
-      <File FileName="Assets/Scripts/AI_Control.cs" Line="365" Column="4" />
+      <File FileName="Assets/Scripts/AI_Control.cs" Line="488" Column="6" />
+      <File FileName="Assets/Scripts/PlayerControl.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EnemyBots" expanded="True">
-            <Node name="Assets" expanded="True" selected="True">
-              <Node name="Scripts" expanded="True" />
+            <Node name="Assets" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="AI_Control.cs" selected="True" />
+              </Node>
             </Node>
           </Node>
         </State>
@@ -17,7 +20,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="6a04e721-f8ab-447b-9249-da19a1a1bbd7" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="4656e027-663b-411d-a6ab-4af003099827" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

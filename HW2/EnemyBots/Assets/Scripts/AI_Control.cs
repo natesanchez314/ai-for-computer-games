@@ -41,12 +41,13 @@ public class AI_Control : MonoBehaviour
 	public float maxSpeed = 10.0f;
 
 	public float minRadiusArrival = 5.0f;
-	public float avoidanceForce = 1.0f;
+	public float avoidanceForce = 0.2f;
 	public float idealDist = 2.0f;
 
 	GameObject[] spheres;
 	List<BoxCollider2D> wallCollisions = new List<BoxCollider2D>();
 	List<CircleCollider2D> collisions = new List<CircleCollider2D>();
+	GameObject[] enemies;
 	Vector3 wanderDisplacement = new Vector3(1, 0);
 	//Vector2 vSteer = Vector2.zero;
 
@@ -67,6 +68,7 @@ public class AI_Control : MonoBehaviour
 		body.velocity = Random.insideUnitCircle.normalized * maxSpeed;
 
 		spheres = GameObject.FindGameObjectsWithTag("Sphere");
+		enemies = GameObject.FindGameObjectsWithTag("Enemy");
 	}
 
 
@@ -225,11 +227,7 @@ public class AI_Control : MonoBehaviour
 
 	void Pursue()
 	{
-		PursueTarget(player.getPosition2D());
-	}
-
-	private void PursueTarget(Vector2 target)
-    {
+		Vector2 target = player.getPosition2D();
 		Vector2 playerVel = player.getVelocity();
 
 		Vector2 hTarget = target + playerVel * (target / maxSpeed);
@@ -243,7 +241,7 @@ public class AI_Control : MonoBehaviour
 		body.velocity += vSteering;
 
 		if (GetDistToTarget(target) < minRadiusArrival)
-			EvadeTarget(target);
+			Evade();
 
 		if (isDebugOn)
 		{
@@ -254,11 +252,7 @@ public class AI_Control : MonoBehaviour
 
 	void Evade()
 	{
-		EvadeTarget(player.getPosition2D());
-	}
-
-	private void EvadeTarget(Vector2 target)
-    {
+		Vector2 target = player.getPosition2D();
 		Vector2 playerVel = player.getVelocity();
 
 		Vector2 hTarget = target + playerVel * (target / maxSpeed);
@@ -317,11 +311,6 @@ public class AI_Control : MonoBehaviour
 		}
 	}
 
-	IEnumerator WanderCoRoutine()
-    {
-		yield return new WaitForSeconds(2);
-    }
-
 	void Hide()
 	{
 		GameObject closestSphere = GetClosestSphere();
@@ -333,7 +322,7 @@ public class AI_Control : MonoBehaviour
 			heading = heading.normalized;
 			heading *= (distFromSphere + closestSphere.GetComponent<CircleCollider2D>().radius);
 
-			PursueTarget(heading);
+			Seek(heading);
 			Arrive(heading);
 
 			if (isDebugOn)
@@ -381,7 +370,7 @@ public class AI_Control : MonoBehaviour
 
 		Separation(maxSeparationForce);
 		Alignment();
-			
+		Cohesion(maxCohesionForce);	
 
 		if (isDebugOn)
 		{
@@ -391,18 +380,38 @@ public class AI_Control : MonoBehaviour
 
 	void Separation(float maxSeparationForce)
     {
-
+		foreach(GameObject enemy in enemies)
+        {
+			Flee(enemy.transform.position);
+		}
     }
 
 	void Alignment()
     {
+		Vector2 totHeading = Vector2.zero;
+		int totEnemies = 0;
+		foreach (GameObject enemy in enemies)
+		{
+			Vector2 heading = (Vector2)enemy.transform.position - enemy.GetComponent<AI_Control>().GetBody().velocity;
+			totHeading += heading;
+			totEnemies++;
+        }
+		if (totEnemies > 0)
+			Seek(totHeading / totEnemies);
+    }
 
+	public Rigidbody2D GetBody()
+    {
+		return this.body;
     }
 
 	void Cohesion(float maxCohesionForce)
     {
-
-    }
+		foreach (GameObject enemy in enemies)
+		{
+			Seek(enemy.transform.position);
+		}
+	}
 
 	void SphereAvoidance()
     {
@@ -460,17 +469,23 @@ public class AI_Control : MonoBehaviour
 	void WallAvoidance()
 	{
 		foreach (BoxCollider2D wall in wallCollisions)
-        {
+	    {
 			Vector2 wallPos = wall.transform.position;
 			Vector2 aiPos = this.transform.position;
-			if (wallPos.x < aiPos.x) // To the left
-				this.body.velocity += new Vector2(avoidanceForce, 0.0f);
-			else if (wallPos.x > aiPos.x) // To the right
-				this.body.velocity += new Vector2(-avoidanceForce, 0.0f);
-			if (wallPos.y < aiPos.y) // Below 
-				this.body.velocity += new Vector2(0.0f, avoidanceForce);
-			else if (wallPos.y > aiPos.y) // Above
-				this.body.velocity += new Vector2(0.0f, -avoidanceForce);
+			if (wall.transform.localScale.y > wall.transform.localScale.x)
+			{
+				if (wallPos.x < aiPos.x) // To the left
+					this.body.velocity += new Vector2(avoidanceForce, 0.0f);
+				else if (wallPos.x > aiPos.x) // To the right
+					this.body.velocity += new Vector2(-avoidanceForce, 0.0f);
+			}
+			else if (wall.transform.localScale.x > wall.transform.localScale.y)
+			{
+				if (wallPos.y < aiPos.y) // Below 
+					this.body.velocity += new Vector2(0.0f, avoidanceForce);
+				else if (wallPos.y > aiPos.y) // Above
+					this.body.velocity += new Vector2(0.0f, -avoidanceForce);
+			}
 		}
     }
 

@@ -555,6 +555,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bot 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1334526744333768, guid: 924daeef914d45740853ddba7bf8e19c, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 4667184833904316, guid: 924daeef914d45740853ddba7bf8e19c, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -973,6 +977,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bot 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1334526744333768, guid: 924daeef914d45740853ddba7bf8e19c, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 4667184833904316, guid: 924daeef914d45740853ddba7bf8e19c, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -1149,6 +1157,10 @@ PrefabInstance:
     - target: {fileID: 1334526744333768, guid: 924daeef914d45740853ddba7bf8e19c, type: 3}
       propertyPath: m_Name
       value: Bot 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1334526744333768, guid: 924daeef914d45740853ddba7bf8e19c, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 4667184833904316, guid: 924daeef914d45740853ddba7bf8e19c, type: 3}
       propertyPath: m_RootOrder
