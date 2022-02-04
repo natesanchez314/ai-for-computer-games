@@ -240,6 +240,9 @@ public class AI_Control : MonoBehaviour
 
 		body.velocity += vSteering;
 
+		if (GetDistToTarget(target) < minRadiusArrival)
+			EvadeTarget(target);
+
 		if (isDebugOn)
 		{
 			debugTarget.SetTarget(target);
@@ -471,6 +474,7 @@ public class AI_Control : MonoBehaviour
     {
 		foreach (BoxCollider2D wall in wallCollisions)
         {
+			Vector3 dirToWall = this.transform.position - wall.transform.position;
 
         }
     }
@@ -498,4 +502,10 @@ public class AI_Control : MonoBehaviour
 		}
 		return closest;
 	}
+
+	private float GetDistToTarget(Vector3 target)
+    {
+		Vector3 heading = target - this.transform.position;
+		return heading.magnitude;
+    }
 }
