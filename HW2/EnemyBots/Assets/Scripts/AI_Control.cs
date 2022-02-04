@@ -43,7 +43,8 @@ public class AI_Control : MonoBehaviour
 	public float minRadiusArrival = 5.0f;
 
 	GameObject[] spheres;
-	List<Collider2D> collisions = new List<Collider2D>();
+	List<BoxCollider2D> wallCollisions = new List<BoxCollider2D>();
+	List<CircleCollider2D> collisions = new List<CircleCollider2D>();
 	Vector3 wanderDisplacement = new Vector3(1, 0);
 	Vector2 vSteer = Vector2.zero;
 
@@ -223,7 +224,6 @@ public class AI_Control : MonoBehaviour
 	void Pursue()
 	{
 		PursueTarget(player.getPosition2D());
-        
 	}
 
 	private void PursueTarget(Vector2 target)
@@ -250,7 +250,6 @@ public class AI_Control : MonoBehaviour
 	void Evade()
 	{
 		EvadeTarget(player.getPosition2D());
-		
 	}
 
 	private void EvadeTarget(Vector2 target)
@@ -277,17 +276,20 @@ public class AI_Control : MonoBehaviour
 	void Wander()
 	{
 		// todo
-		float WANDER_ANGLE = 15.0f;
+		float WANDER_ANGLE = 30.0f;
 		float CIRCLE_RADIUS = 1.0f;
 		float CIRCLE_DIST = 3.0f;
 		float ANGLE_CHANGE = 0.5f;
 
-		Vector3 circleCenter = (Vector3)this.body.velocity;
-		//Vector3 circleCenter = this.body.transform.forward + (Vector3)this.body.position;
-		//Vector3 circleCenter = this.body.transform.position - (Vector3)this.body.velocity;
-		//Vector3 circleCenter = this.transform.position + Vector3.Project((Vector3)this.body.velocity, this.body.transform.forward);
+		Vector3 circleCenter = new Vector3(
+			this.body.velocity.x,
+			this.body.velocity.y,
+			0.0f
+		);
+
 		circleCenter = circleCenter.normalized;
 		circleCenter *= CIRCLE_DIST;
+		circleCenter = this.transform.position + circleCenter;
 
 		float angle = Random.Range(-WANDER_ANGLE, WANDER_ANGLE);
 		wanderDisplacement = Quaternion.Euler(0, 0, (angle * ANGLE_CHANGE) - (ANGLE_CHANGE * 0.5f)) * wanderDisplacement;
@@ -333,12 +335,18 @@ public class AI_Control : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D col)
     {
-		collisions.Add(col);
+		if (col.GetType() == typeof(CircleCollider2D))
+			collisions.Add((CircleCollider2D)col);
+		else if (col.GetType() == typeof(BoxCollider2D))
+			wallCollisions.Add((BoxCollider2D)col);
     }
 
 	void OnTriggerExit2D(Collider2D col)
 	{
-		collisions.Remove(col);
+		if (col.GetType() == typeof(CircleCollider2D))
+			collisions.Remove((CircleCollider2D)col);
+		else if (col.GetType() == typeof(BoxCollider2D))
+			wallCollisions.Remove((BoxCollider2D)col);
 	}
 
 	void ObstacleAvoidance()
@@ -408,13 +416,13 @@ public class AI_Control : MonoBehaviour
     {
 		CircleCollider2D closest = null;
 		float closestDist = 0.0f;
-		foreach (Collider2D collision in collisions)
+		foreach (CircleCollider2D collision in collisions)
 		{
 			if (collision != null && collision)
 			{
-				if (closest == null && collision.GetType() == typeof(CircleCollider2D))
+				if (closest == null)
 				{
-					closest = (CircleCollider2D)collision;
+					closest = collision;
 					closestDist = Vector3.Distance(this.gameObject.transform.position, collision.transform.position);
 				}
 				else
@@ -422,7 +430,7 @@ public class AI_Control : MonoBehaviour
 					float dist = Vector3.Distance(this.gameObject.transform.position, collision.transform.position);
 					if (dist < closestDist)
 					{
-						closest = (CircleCollider2D)collision;
+						closest = collision;
 						closestDist = dist;
 					}
 				}
@@ -431,21 +439,24 @@ public class AI_Control : MonoBehaviour
 
 		if (closest != null)
 		{
+			// Braking force
 			Vector3 headingTarget = (Vector3)this.body.position - closest.transform.position;
-			Vector3 desiredVelocity = headingTarget.normalized * maxSpeed * (closestDist / maxSpeed);
-			Vector3 brakingForce = desiredVelocity - (Vector3)this.body.velocity;
-			brakingForce = Vector2.ClampMagnitude(brakingForce, maxForce);
+			Vector2 brakeForce = Vector2.zero;
+			float dist = headingTarget.magnitude;
+			if (dist < closest.GetComponent<CircleCollider2D>().radius)
+			{
+				Vector3 brakeHeading = -(Vector3)this.body.velocity;
+				
+				brakeForce = brakeHeading / (dist / 5.0f);
+				brakeForce = Vector2.ClampMagnitude(brakeForce, maxForce);
+			}
 
-			Vector3 steeringForce = Vector3.Cross((Vector3)this.body.velocity, brakingForce);
-			steeringForce = steeringForce.normalized * maxSpeed * closest.radius;
-			steeringForce = Vector3.ClampMagnitude(steeringForce, maxForce);
-
-			this.body.velocity += (Vector2)(steeringForce + brakingForce);
-
-			Vector3 avoidanceForce = closest.transform.position - (Vector3)this.body.velocity;
-			avoidanceForce = avoidanceForce.normalized * maxForce;
-
-			this.body.velocity += (Vector2)avoidanceForce;
+			// Avoidance force
+			Vector3 ahead = (Vector3)this.body.position + (Vector3)this.body.position.normalized * maxSpeed;
+			Vector3 avoidanceForce = ahead - closest.transform.position;
+			avoidanceForce = avoidanceForce.normalized * maxForce * 3;
+			
+			this.body.velocity += (Vector2)avoidanceForce + (Vector2)brakeForce;
 		}
 
 		if (isDebugOn)
@@ -458,9 +469,11 @@ public class AI_Control : MonoBehaviour
 
 	void WallAvoidance()
     {
+		foreach (BoxCollider2D wall in wallCollisions)
+        {
 
+        }
     }
-
 
 	GameObject GetClosestSphere()
 	{
