@@ -45,6 +45,7 @@ public class AI_Control : MonoBehaviour
 	public float idealDist = 2.0f;
 	public float maxSeparationForce = 0.4f;
 	public float maxCohesionForce = 0.4f;
+	bool updateWander = false;
 
 	GameObject[] spheres;
 	List<BoxCollider2D> wallCollisions = new List<BoxCollider2D>();
@@ -76,6 +77,7 @@ public class AI_Control : MonoBehaviour
 
     void Update()
     {
+		StartCoroutine(WanderCoRoutine());
         if (Input.GetKeyDown(KeyCode.D))
         {
 			isDebugOn = !isDebugOn;
@@ -277,41 +279,52 @@ public class AI_Control : MonoBehaviour
 	void Wander()
 	{
 		// todo
-		//StartCoroutine(WanderCoRoutine());
+		//End
 		float WANDER_ANGLE = 45.0f;
 		float CIRCLE_RADIUS = 1.0f;
 		float CIRCLE_DIST = 3.0f;
-		float ANGLE_CHANGE = 0.1f;
+		float ANGLE_CHANGE = 0.5f;
 
-		Vector3 circleCenter = new Vector3(
-			this.body.velocity.x,
-			this.body.velocity.y,
-			0.0f
-		);
+		//if (updateWander)
+		//{
+			Vector3 circleCenter = new Vector3(
+				this.body.velocity.x,
+				this.body.velocity.y,
+				0.0f
+			);
 
-		circleCenter = circleCenter.normalized;
-		circleCenter *= CIRCLE_DIST;
-		circleCenter = this.transform.position + circleCenter;
+			circleCenter = circleCenter.normalized;
+			circleCenter *= CIRCLE_DIST;
+			circleCenter = this.transform.position + circleCenter;
 
-		float angle = Random.Range(-WANDER_ANGLE, WANDER_ANGLE);
-		wanderDisplacement = Quaternion.Euler(0, 0, (angle * ANGLE_CHANGE) - (ANGLE_CHANGE * 0.5f)) * wanderDisplacement;
-		wanderDisplacement = wanderDisplacement.normalized * CIRCLE_RADIUS;
-		Vector3 target = circleCenter + wanderDisplacement;
+			float angle = Random.Range(-WANDER_ANGLE, WANDER_ANGLE);
+			wanderDisplacement = Quaternion.Euler(0, 0, (angle * ANGLE_CHANGE) - (ANGLE_CHANGE * 0.5f)) * wanderDisplacement;
+			wanderDisplacement = wanderDisplacement.normalized * CIRCLE_RADIUS;
+			Vector3 target = circleCenter + wanderDisplacement;
 
-        Vector2 hTarget = target - this.transform.position;
-        Vector2 vDesired = hTarget.normalized * maxSpeed / 2;
-        Vector2 vSteering = vDesired - body.velocity;
-        vSteering = Vector2.ClampMagnitude(vSteering, maxForce);
-        body.velocity += vSteering;
-		//vSteer = vSteering;
+			Vector2 hTarget = target - this.transform.position;
+			Vector2 vDesired = hTarget.normalized * maxSpeed / 2;
+			Vector2 vSteering = vDesired - body.velocity;
+			vSteering = Vector2.ClampMagnitude(vSteering, maxForce);
+			body.velocity += vSteering;
+			//vSteer = vSteering;
 
-        if (isDebugOn)
-		{
-			debugCircle.setCircle(circleCenter, CIRCLE_RADIUS);
-			debugVelocity.SetVelocity(body.velocity);
-			debugTarget.SetTarget(target);
-		}
+			updateWander = false;
+
+			if (isDebugOn)
+			{
+				debugCircle.setCircle(circleCenter, CIRCLE_RADIUS);
+				debugVelocity.SetVelocity(body.velocity);
+				debugTarget.SetTarget(target);
+			}
+		//}
 	}
+
+	IEnumerator WanderCoRoutine()
+    {
+		yield return new WaitForSecondsRealtime(10);
+		updateWander = true;
+    }
 
 	void Hide()
 	{
