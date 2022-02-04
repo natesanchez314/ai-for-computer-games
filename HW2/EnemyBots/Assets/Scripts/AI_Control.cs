@@ -367,6 +367,7 @@ public class AI_Control : MonoBehaviour
 		// rather than performing the logic here, individual bots will likely
 		// get desired behavior from a controller class while in Group Behavior state
 
+		Flee(player.getPosition2D());
 		Separation();
 		Alignment();
 		Cohesion();	
@@ -389,27 +390,27 @@ public class AI_Control : MonoBehaviour
 
 	void Alignment()
     {
-		Vector2 totHeading = Vector2.zero;
-		int totEnemies = 0;
-		foreach (GameObject enemy in enemies)
-		{
-			Vector2 heading = enemy.GetComponent<AI_Control>().GetBody().velocity;
-			totHeading += heading;
-			totEnemies++;
-		}
-		if (totEnemies > 0)
-			Seek(totHeading);// / totEnemies);
-
 		//Vector2 totHeading = Vector2.zero;
 		//int totEnemies = 0;
 		//foreach (GameObject enemy in enemies)
 		//{
-		//	Vector2 heading = enemy.GetComponent<AI_Control>().GetBody().velocity - (Vector2)enemy.transform.position;
+		//	Vector2 heading = enemy.GetComponent<AI_Control>().GetBody().velocity;
 		//	totHeading += heading;
 		//	totEnemies++;
-  //      }
+		//}
 		//if (totEnemies > 0)
 		//	Seek(totHeading);// / totEnemies);
+
+		Vector2 totHeading = Vector2.zero;
+		int totEnemies = 0;
+		foreach (GameObject enemy in enemies)
+		{
+			Vector2 heading = enemy.GetComponent<AI_Control>().GetBody().velocity - (Vector2)enemy.transform.position;
+			totHeading += heading;
+			totEnemies++;
+	    }
+		if (totEnemies > 0)
+			Seek(totHeading);// / totEnemies);
     }
 
 	public Rigidbody2D GetBody()
