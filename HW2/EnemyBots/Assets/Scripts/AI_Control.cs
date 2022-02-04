@@ -41,12 +41,14 @@ public class AI_Control : MonoBehaviour
 	public float maxSpeed = 10.0f;
 
 	public float minRadiusArrival = 5.0f;
+	public float avoidanceForce = 1.0f;
+	public float idealDist = 2.0f;
 
 	GameObject[] spheres;
 	List<BoxCollider2D> wallCollisions = new List<BoxCollider2D>();
 	List<CircleCollider2D> collisions = new List<CircleCollider2D>();
 	Vector3 wanderDisplacement = new Vector3(1, 0);
-	Vector2 vSteer = Vector2.zero;
+	//Vector2 vSteer = Vector2.zero;
 
 	// Initialization
 	void Start () 
@@ -279,10 +281,11 @@ public class AI_Control : MonoBehaviour
 	void Wander()
 	{
 		// todo
-		float WANDER_ANGLE = 30.0f;
+		//StartCoroutine(WanderCoRoutine());
+		float WANDER_ANGLE = 45.0f;
 		float CIRCLE_RADIUS = 1.0f;
 		float CIRCLE_DIST = 3.0f;
-		float ANGLE_CHANGE = 0.5f;
+		float ANGLE_CHANGE = 0.1f;
 
 		Vector3 circleCenter = new Vector3(
 			this.body.velocity.x,
@@ -304,7 +307,7 @@ public class AI_Control : MonoBehaviour
         Vector2 vSteering = vDesired - body.velocity;
         vSteering = Vector2.ClampMagnitude(vSteering, maxForce);
         body.velocity += vSteering;
-		vSteer = vSteering;
+		//vSteer = vSteering;
 
         if (isDebugOn)
 		{
@@ -313,6 +316,11 @@ public class AI_Control : MonoBehaviour
 			debugTarget.SetTarget(target);
 		}
 	}
+
+	IEnumerator WanderCoRoutine()
+    {
+		yield return new WaitForSeconds(2);
+    }
 
 	void Hide()
 	{
@@ -396,25 +404,6 @@ public class AI_Control : MonoBehaviour
 
     }
 
-	void SphereAvoidanceMapped()
-	{
-		CircleCollider2D closest = GetClosestSphere().GetComponent<CircleCollider2D>();
-		if (closest != null)
-		{
-			Vector3 headingTarget = (Vector3)this.body.position - closest.transform.position;
-			Vector3 desiredVelocity = headingTarget.normalized * maxSpeed * Vector3.Distance(this.body.position, closest.transform.position);
-			Vector3 brakingForce = desiredVelocity - (Vector3)this.body.velocity;
-			brakingForce = Vector2.ClampMagnitude(brakingForce, maxForce);
-
-			Vector3 steeringForce = Vector3.Cross((Vector3)this.body.velocity, brakingForce);
-			steeringForce = steeringForce.normalized * maxSpeed * closest.radius;
-			//steeringForce = Vector3.ClampMagnitude(steeringForce, maxForce);
-
-			this.body.velocity += (Vector2)(steeringForce + brakingForce);
-
-		}
-	}
-
 	void SphereAvoidance()
     {
 		CircleCollider2D closest = null;
@@ -464,19 +453,25 @@ public class AI_Control : MonoBehaviour
 
 		if (isDebugOn)
 		{
-			if (closest != null)
-				Debug.Log("Closest" + closest.name);
 			debugVelocity.SetVelocity(body.velocity);
 		}
 	}		
 
 	void WallAvoidance()
-    {
+	{
 		foreach (BoxCollider2D wall in wallCollisions)
         {
-			Vector3 dirToWall = this.transform.position - wall.transform.position;
-
-        }
+			Vector2 wallPos = wall.transform.position;
+			Vector2 aiPos = this.transform.position;
+			if (wallPos.x < aiPos.x) // To the left
+				this.body.velocity += new Vector2(avoidanceForce, 0.0f);
+			else if (wallPos.x > aiPos.x) // To the right
+				this.body.velocity += new Vector2(-avoidanceForce, 0.0f);
+			if (wallPos.y < aiPos.y) // Below 
+				this.body.velocity += new Vector2(0.0f, avoidanceForce);
+			else if (wallPos.y > aiPos.y) // Above
+				this.body.velocity += new Vector2(0.0f, -avoidanceForce);
+		}
     }
 
 	GameObject GetClosestSphere()
