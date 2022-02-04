@@ -1401,7 +1401,12 @@ PrefabInstance:
     - target: {fileID: 114921697282947974, guid: 924daeef914d45740853ddba7bf8e19c,
         type: 3}
       propertyPath: state
-      value: 7
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114921697282947974, guid: 924daeef914d45740853ddba7bf8e19c,
+        type: 3}
+      propertyPath: maxForce
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 114921697282947974, guid: 924daeef914d45740853ddba7bf8e19c,
         type: 3}

@@ -596,6 +596,26 @@ PrefabInstance:
       propertyPath: state
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 114921697282947974, guid: 924daeef914d45740853ddba7bf8e19c,
+        type: 3}
+      propertyPath: maxSpeed
+      value: 7.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114921697282947974, guid: 924daeef914d45740853ddba7bf8e19c,
+        type: 3}
+      propertyPath: avoidanceForce
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114921697282947974, guid: 924daeef914d45740853ddba7bf8e19c,
+        type: 3}
+      propertyPath: maxCohesionForce
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114921697282947974, guid: 924daeef914d45740853ddba7bf8e19c,
+        type: 3}
+      propertyPath: maxSeparationForce
+      value: 0.6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 924daeef914d45740853ddba7bf8e19c, type: 3}
 --- !u!1 &970877531
@@ -1018,6 +1038,26 @@ PrefabInstance:
       propertyPath: state
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 114921697282947974, guid: 924daeef914d45740853ddba7bf8e19c,
+        type: 3}
+      propertyPath: maxSpeed
+      value: 7.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114921697282947974, guid: 924daeef914d45740853ddba7bf8e19c,
+        type: 3}
+      propertyPath: avoidanceForce
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114921697282947974, guid: 924daeef914d45740853ddba7bf8e19c,
+        type: 3}
+      propertyPath: maxCohesionForce
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114921697282947974, guid: 924daeef914d45740853ddba7bf8e19c,
+        type: 3}
+      propertyPath: maxSeparationForce
+      value: 0.6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 924daeef914d45740853ddba7bf8e19c, type: 3}
 --- !u!1 &2065542904
@@ -1198,6 +1238,26 @@ PrefabInstance:
         type: 3}
       propertyPath: state
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 114921697282947974, guid: 924daeef914d45740853ddba7bf8e19c,
+        type: 3}
+      propertyPath: maxSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114921697282947974, guid: 924daeef914d45740853ddba7bf8e19c,
+        type: 3}
+      propertyPath: avoidanceForce
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114921697282947974, guid: 924daeef914d45740853ddba7bf8e19c,
+        type: 3}
+      propertyPath: maxCohesionForce
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114921697282947974, guid: 924daeef914d45740853ddba7bf8e19c,
+        type: 3}
+      propertyPath: maxSeparationForce
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 924daeef914d45740853ddba7bf8e19c, type: 3}

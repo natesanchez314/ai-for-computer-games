@@ -43,6 +43,8 @@ public class AI_Control : MonoBehaviour
 	public float minRadiusArrival = 5.0f;
 	public float avoidanceForce = 0.2f;
 	public float idealDist = 2.0f;
+	public float maxSeparationForce = 0.4f;
+	public float maxCohesionForce = 0.4f;
 
 	GameObject[] spheres;
 	List<BoxCollider2D> wallCollisions = new List<BoxCollider2D>();
@@ -365,12 +367,9 @@ public class AI_Control : MonoBehaviour
 		// rather than performing the logic here, individual bots will likely
 		// get desired behavior from a controller class while in Group Behavior state
 
-		float maxSeparationForce = 0.2f;
-		float maxCohesionForce = 0.2f;
-
-		Separation(maxSeparationForce);
+		Separation();
 		Alignment();
-		Cohesion(maxCohesionForce);	
+		Cohesion();	
 
 		if (isDebugOn)
 		{
@@ -378,11 +377,13 @@ public class AI_Control : MonoBehaviour
 		}
 	}
 
-	void Separation(float maxSeparationForce)
+	void Separation()
     {
 		foreach(GameObject enemy in enemies)
         {
-			Flee(enemy.transform.position);
+			Vector2 heading = this.transform.position - enemy.transform.position;
+			if (heading.magnitude < 2.0f)
+				Flee(enemy.transform.position);
 		}
     }
 
@@ -392,12 +393,23 @@ public class AI_Control : MonoBehaviour
 		int totEnemies = 0;
 		foreach (GameObject enemy in enemies)
 		{
-			Vector2 heading = (Vector2)enemy.transform.position - enemy.GetComponent<AI_Control>().GetBody().velocity;
+			Vector2 heading = enemy.GetComponent<AI_Control>().GetBody().velocity;
 			totHeading += heading;
 			totEnemies++;
-        }
+		}
 		if (totEnemies > 0)
-			Seek(totHeading / totEnemies);
+			Seek(totHeading);// / totEnemies);
+
+		//Vector2 totHeading = Vector2.zero;
+		//int totEnemies = 0;
+		//foreach (GameObject enemy in enemies)
+		//{
+		//	Vector2 heading = enemy.GetComponent<AI_Control>().GetBody().velocity - (Vector2)enemy.transform.position;
+		//	totHeading += heading;
+		//	totEnemies++;
+  //      }
+		//if (totEnemies > 0)
+		//	Seek(totHeading);// / totEnemies);
     }
 
 	public Rigidbody2D GetBody()
@@ -405,11 +417,14 @@ public class AI_Control : MonoBehaviour
 		return this.body;
     }
 
-	void Cohesion(float maxCohesionForce)
+	void Cohesion()
     {
-		foreach (GameObject enemy in enemies)
+		foreach(GameObject enemy in enemies)
+
 		{
-			Seek(enemy.transform.position);
+			Vector2 heading = this.transform.position - enemy.transform.position;
+			if (heading.magnitude > 5.0f)
+				Seek(enemy.transform.position);
 		}
 	}
 
