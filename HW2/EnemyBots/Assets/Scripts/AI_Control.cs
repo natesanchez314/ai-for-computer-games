@@ -434,7 +434,6 @@ public class AI_Control : MonoBehaviour
 	void Cohesion()
     {
 		foreach(GameObject enemy in enemies)
-
 		{
 			Vector2 heading = this.transform.position - enemy.transform.position;
 			if (heading.magnitude > 5.0f)

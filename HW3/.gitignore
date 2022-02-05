@@ -1,0 +1,10 @@
+/Library
+/Logs
+/obj
+/Temp
+/UserSettings
+
+.DS_Store
+.vsconfig
+Assembly-CSharp.csproj
+EnemyBots.sln
