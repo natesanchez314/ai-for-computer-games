@@ -1,0 +1,48 @@
+﻿<Properties StartupConfiguration="{54D378FC-8661-A00A-D6EB-1A5089C140F2}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/[WORK FOLDER]/Scripts/Behavior tree/PriorityTargeting/TargetSelection/LineOfSightTask.cs">
+    <Files>
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/PriorityTargeting/UpdateTargetTask.cs" Line="25" Column="8" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/PriorityTargeting/PriorityTargetingTask.cs" Line="18" Column="11" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/BehaviorTreeSurvivor.cs" Line="1" Column="1" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Blackboard_Survivor.cs" Line="6" Column="1" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Survivor_AI.cs" Line="34" Column="6" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Task.cs" Line="31" Column="38" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/PriorityTargeting/LineOfSightTask.cs" Line="27" Column="19" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="HW3" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="[GAME ASSETS] - Do Not Modify" expanded="True">
+                <Node name="Scripts" expanded="True">
+                  <Node name="Enemies" expanded="True" />
+                  <Node name="Survivor" expanded="True" />
+                </Node>
+              </Node>
+              <Node name="[WORK FOLDER]" expanded="True">
+                <Node name="Scripts" expanded="True">
+                  <Node name="Behavior tree" expanded="True">
+                    <Node name="Movement" expanded="True" />
+                    <Node name="PriorityTargeting" expanded="True">
+                      <Node name="TargetSelection" expanded="True">
+                        <Node name="LineOfSightTask.cs" selected="True" />
+                      </Node>
+                    </Node>
+                  </Node>
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="8fa4e8e7-ce3b-4e23-af02-c204d392c8c2" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

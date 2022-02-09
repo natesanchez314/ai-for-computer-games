@@ -1,3 +1,5 @@
+using UnityEngine;
+
 class SmarterAvoidanceTask : Task
 {
     public SmarterAvoidanceTask() : base()
@@ -5,6 +7,7 @@ class SmarterAvoidanceTask : Task
 
     public override bool Run(Survivor_AI survivor)
     {
+        Debug.Log("Smarter avoidance");
         return base.Run(survivor);
     }
 }

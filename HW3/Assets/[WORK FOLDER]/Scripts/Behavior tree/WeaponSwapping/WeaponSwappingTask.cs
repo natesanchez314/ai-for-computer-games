@@ -1,21 +1,25 @@
-class WeaponSwappingTask : RandomSelectorTask
+using UnityEngine;
+
+class WeaponSwappingTask : RandomSelectorTask // Change to selector task later
 {
     public WeaponSwappingTask() : base()
     { }
 
     public override bool Run(Survivor_AI survivor)
     {
-        /* WEAPON_TYPE wt = ChooseBestWeapon();
-         switch(wt)
-         {
-             case WEAPON_TYPE.PISTOL:
-                 return 
-         }*/
+        Debug.Log("Swapping weapons!");
+        if (this.children.Count == 0)
+            InitChildren();
         return base.Run(survivor);
     }
 
-    private WEAPON_TYPE ChooseBestWeapon()
+    protected override void InitChildren()
     {
-        return WEAPON_TYPE.NULL;
+        AddTask(new EquipAssaultTask());
+        AddTask(new EquipGrenadeLauncherTask());
+        AddTask(new EquipPistolTask());
+        AddTask(new EquipShotgunTask());
+        AddTask(new EquipSniperTask());
+        //AddTask(new EquipNullTask());
     }
 }

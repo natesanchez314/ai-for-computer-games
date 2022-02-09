@@ -13,6 +13,8 @@ class PriorityTargetingTask : Task
 
     protected override void InitChildren()
     {
-        AddTask(new UpdateTargetTask());
+        AddTask(new LineOfSightTask());
+        AddTask(new UpdateClosestEnemyTask());
+        //AddTask(new TargetStrongZombieTask());
     }
 }

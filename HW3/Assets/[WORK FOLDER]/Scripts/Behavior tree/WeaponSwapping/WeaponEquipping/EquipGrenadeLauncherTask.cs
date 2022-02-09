@@ -1,3 +1,5 @@
+using UnityEngine;
+
 class EquipGrenadeLauncherTask : Task
 {
     // Start is called before the first frame update
@@ -6,6 +8,7 @@ class EquipGrenadeLauncherTask : Task
 
     public override bool Run(Survivor_AI survivor)
     {
+        Debug.Log("    Equipping Grenade launcher");
         survivor.SwitchWeapon(WEAPON_TYPE.GRENADE_LAUNCHER);
         return true;
     }

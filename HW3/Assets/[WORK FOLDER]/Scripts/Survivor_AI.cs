@@ -2,42 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Survivor_AI : MonoBehaviour
+class Survivor_AI : MonoBehaviour
 {
     Survivor survivor;
 
     //Blackboard_Survivor blackboard;
 
     Task BT_Basic;
-
-
+    public Blackboard_Survivor blackboard;
 
     // Start is called before the first frame update
     void Start()
     {
         survivor = GetComponent<Survivor>();
-        //BT_Basic = new BehaviorTreeSurvivor();
+        BT_Basic = new BehaviorTreeSurvivor();
+        blackboard = new Blackboard_Survivor();
     }
 
     // Update is called once per frame
     void Update()
     {
-        this.MoveTo(new Vector3(1000, 1000, 0));
-        /*if (BT_Basic == null)
+        //this.MoveTo(new Vector3(1000, 1000, 0));
+        if (BT_Basic == null)
             BT_Basic = new BehaviorTreeSurvivor();
-        BT_Basic.Run(this);*/
+        BT_Basic.Run(this);
     }
 
-    /*public Blackboard_Survivor GetBlackboard()
+    public Blackboard_Survivor GetBlackboard()
     {
         return blackboard;
-    }*/
+    }
 
     public void MoveTo(Vector3 target)
     {
-        Debug.Log("Pre move call");
         survivor.MoveTo(target);
-        Debug.Log("Post move call");
     }
 
     public void Fire(Vector3 target)
