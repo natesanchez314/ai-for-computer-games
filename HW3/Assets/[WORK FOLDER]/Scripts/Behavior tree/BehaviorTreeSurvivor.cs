@@ -12,6 +12,6 @@ class BehaviorTreeSurvivor : Task
     {
         AddTask(new PriorityTargetingTask());
         AddTask(new MovementTask());
-        AddTask(new WeaponSwappingTask());
+        AddTask(new WeaponsTask());
     }
 }
