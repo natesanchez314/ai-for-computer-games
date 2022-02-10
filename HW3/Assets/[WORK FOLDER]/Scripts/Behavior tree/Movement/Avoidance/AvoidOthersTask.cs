@@ -12,7 +12,7 @@ class AvoidOthersTask : Task
         foreach (Enemy enemy in enemies)
         {
             Vector3 survivorPos = survivor.transform.position;
-            Vector3 enemyPos = survivor.transform.position;
+            Vector3 enemyPos = enemy.transform.position;
 
             Vector3 heading = enemyPos - survivorPos;
             heading = heading.normalized;

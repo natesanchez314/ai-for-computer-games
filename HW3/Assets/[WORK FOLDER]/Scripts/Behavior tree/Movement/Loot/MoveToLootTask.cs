@@ -14,6 +14,7 @@ class MoveToLootTask : Task
             Loot loot = survivor.blackboard.closestLoot;
             if (loot != null)
             {
+                Debug.Log("Moving to loot");
                 survivor.MoveTo(loot.transform.position);
                 return true;
             }

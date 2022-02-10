@@ -31,7 +31,11 @@ class FindClosestLoot : Task
         }
         survivor.blackboard.SetClosestLoot(closestLoot, closestDist);
         if (closestLoot == null)
+        {
+            Debug.Log("Did not find loot");
             return false;
+        }
+        Debug.Log("Found loot");
         return true;
     }
 }

@@ -26,6 +26,7 @@ class Survivor_AI : MonoBehaviour
         if (BT_Basic == null)
             BT_Basic = new BehaviorTreeSurvivor();
         BT_Basic.Run(this);
+        Debug.ClearDeveloperConsole();
     }
 
     public Blackboard_Survivor GetBlackboard()

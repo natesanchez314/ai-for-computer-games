@@ -11,8 +11,9 @@ class SetNewWanderHeadingTask : Task
     {
         Vector3 survivorPos = survivor.transform.position;
         Vector3 heading = survivor.blackboard.randomHeading;
-        float dist = (heading - survivorPos).magnitude;
-        if (dist < 5.0f)
+        float xDiff = Mathf.Abs(survivorPos.x - heading.x);
+        float zDiff = Mathf.Abs(survivorPos.z - heading.z);
+        if (xDiff < 3.0f && zDiff < 3.0f)
         {
             survivor.blackboard.randomHeading = new Vector3(
                 Random.Range(-50, 50),

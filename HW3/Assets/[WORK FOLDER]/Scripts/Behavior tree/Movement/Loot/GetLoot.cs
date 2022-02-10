@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-class GetLoot : Task
+class GetLoot : SequenceTask
 {
     public GetLoot() : base()
     { }
