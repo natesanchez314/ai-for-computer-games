@@ -53,4 +53,9 @@ class Survivor_AI : MonoBehaviour
     {
         survivor.SwitchWeapons(newWeapon);
     }
+
+    public Weapon[] GetWeaponList()
+    {
+        return survivor.GetWeaponList();
+    }
 }

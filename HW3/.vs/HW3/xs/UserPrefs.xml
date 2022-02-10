@@ -1,7 +1,9 @@
 ﻿<Properties StartupConfiguration="{54D378FC-8661-A00A-D6EB-1A5089C140F2}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/[WORK FOLDER]/Scripts/Survivor_AI.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/[WORK FOLDER]/Scripts/Behavior tree/Weapons/WeaponDetermination/DetermineBestWeaponTask.cs">
     <Files>
-      <File FileName="Assets/[WORK FOLDER]/Scripts/Survivor_AI.cs" Line="29" Column="39" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Survivor_AI.cs" Line="59" Column="41" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Blackboard_Survivor.cs" Line="86" Column="57" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Weapons/WeaponDetermination/DetermineBestWeaponTask.cs" Line="28" Column="10" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -12,6 +14,7 @@
                 <Node name="Scripts" expanded="True">
                   <Node name="Core" expanded="True" />
                   <Node name="Survivor" expanded="True" />
+                  <Node name="Weapons" expanded="True" />
                 </Node>
               </Node>
               <Node name="[WORK FOLDER]" expanded="True">
@@ -27,11 +30,12 @@
                     </Node>
                     <Node name="Weapons" expanded="True">
                       <Node name="Firing" expanded="True" />
-                      <Node name="WeaponDetermination" expanded="True" />
+                      <Node name="WeaponDetermination" expanded="True">
+                        <Node name="DetermineBestWeaponTask.cs" selected="True" />
+                      </Node>
                       <Node name="WeaponEquipping" expanded="True" />
                     </Node>
                   </Node>
-                  <Node name="Survivor_AI.cs" selected="True" />
                 </Node>
               </Node>
             </Node>

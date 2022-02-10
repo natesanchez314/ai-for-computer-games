@@ -56,38 +56,36 @@ class Blackboard_Survivor : Task
         closestLootDist = dist;
     }
 
-    public float GetWeaponRange(WEAPON_TYPE type)
+    public float GetWeaponRange(WEAPON_TYPE type, Survivor_AI survivor)
     {
         if (!weaponRanges.ContainsKey(type))
-            InitWeaponRange(type);
+            InitWeaponRange(type, survivor);
         return weaponRanges[type];
     }
 
-    private void InitWeaponRange(WEAPON_TYPE type)
+    private void InitWeaponRange(WEAPON_TYPE type, Survivor_AI survivor)
     {
-        Weapon weapon;
-        switch (type)
+        Weapon[] weapons = survivor.GetWeaponList();
+        foreach (Weapon weapon in weapons)
         {
-            case WEAPON_TYPE.PISTOL:
-                weapon = new Pistol();
-                weaponRanges.Add(type, weapon.getRange());
-                break;
-            case WEAPON_TYPE.ASSAULT:
-                weapon = new AssaultRifle();
-                weaponRanges.Add(type, weapon.getRange());
-                break;
-            case WEAPON_TYPE.SNIPER:
-                weapon = new SniperRifle();
-                weaponRanges.Add(type, weapon.getRange());
-                break;
-            case WEAPON_TYPE.SHOTGUN:
-                weapon = new Shotgun();
-                weaponRanges.Add(type, weapon.getRange());
-                break;
-            case WEAPON_TYPE.GRENADE_LAUNCHER:
-                weapon = new GrenadeLauncher();
-                weaponRanges.Add(type, weapon.getRange());
-                break;
+            switch (weapon.type)
+            {
+                case WEAPON_TYPE.ASSAULT:
+                    weaponRanges.Add(WEAPON_TYPE.ASSAULT, weapon.getRange());
+                    break;
+                case WEAPON_TYPE.GRENADE_LAUNCHER:
+                    weaponRanges.Add(WEAPON_TYPE.GRENADE_LAUNCHER, weapon.getRange());
+                    break;
+                case WEAPON_TYPE.SHOTGUN:
+                    weaponRanges.Add(WEAPON_TYPE.SHOTGUN, weapon.getRange());
+                    break;
+                case WEAPON_TYPE.SNIPER:
+                    weaponRanges.Add(WEAPON_TYPE.SNIPER, weapon.getRange());
+                    break;
+                case WEAPON_TYPE.PISTOL:
+                    weaponRanges.Add(WEAPON_TYPE.PISTOL, weapon.getRange());
+                    break;
+            }
         }
     }
 }
