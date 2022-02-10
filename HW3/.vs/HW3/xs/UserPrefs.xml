@@ -1,15 +1,24 @@
 ﻿<Properties StartupConfiguration="{54D378FC-8661-A00A-D6EB-1A5089C140F2}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/[GAME ASSETS] - Do Not Modify/Scripts/Core/GameManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/Wander/WanderMoveTask.cs">
     <Files>
-      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/Loot/PickUpLootTask.cs" Line="19" Column="1" />
-      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/Loot/FindClosestLoot.cs" Line="33" Column="26" />
-      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/Wander/WanderTask.cs" Line="1" Column="1" />
-      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Task.cs" Line="1" Column="1" />
-      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/Loot/MoveToLootTask.cs" Line="1" Column="1" />
-      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/MovementTask.cs" Line="1" Column="1" />
-      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/Loot/GetLoot.cs" Line="12" Column="11" />
-      <File FileName="Assets/[WORK FOLDER]/Scripts/Survivor_AI.cs" Line="58" Column="27" />
-      <File FileName="Assets/[GAME ASSETS] - Do Not Modify/Scripts/Core/GameManager.cs" Line="468" Column="21" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/Avoidance/AvoidMainTask.cs" Line="13" Column="34" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/MoveTask.cs" Line="13" Column="67" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/Avoidance/AvoidZombiesTask.cs" Line="13" Column="9" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/MovementTask.cs" Line="16" Column="9" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/Loot/GetLoot.cs" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/Loot/MoveToLootTask.cs" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/Loot/PickUpLootTask.cs" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Weapons/Firing/FireWeaponTask.cs" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/PriorityTargeting/TargetSelection/UpdateClosestEnemyTask.cs" Line="1" Column="1" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/PriorityTargeting/TargetSelection/TargetStrongZombieTask.cs" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/PriorityTargeting/PriorityTargetingTask.cs" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/PriorityTargeting/TargetSelection/LineOfSightTask.cs" Line="27" Column="34" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/Avoidance/AvoidOthersTask.cs" Line="1" Column="1" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/Loot/FindClosestLoot.cs" Line="1" Column="1" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/Wander/WanderTask.cs" Line="18" Column="12" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Blackboard_Survivor.cs" Line="38" Column="32" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/Wander/SetNewWanderHeadingTask.cs" Line="25" Column="1" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/Wander/WanderMoveTask.cs" Line="7" Column="37" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -18,9 +27,8 @@
             <Node name="Assets" expanded="True">
               <Node name="[GAME ASSETS] - Do Not Modify" expanded="True">
                 <Node name="Scripts" expanded="True">
-                  <Node name="Core" expanded="True">
-                    <Node name="GameManager.cs" selected="True" />
-                  </Node>
+                  <Node name="Core" expanded="True" />
+                  <Node name="Survivor" expanded="True" />
                 </Node>
               </Node>
               <Node name="[WORK FOLDER]" expanded="True">
@@ -29,7 +37,9 @@
                     <Node name="Movement" expanded="True">
                       <Node name="Avoidance" expanded="True" />
                       <Node name="Loot" expanded="True" />
-                      <Node name="Wander" expanded="True" />
+                      <Node name="Wander" expanded="True">
+                        <Node name="WanderMoveTask.cs" selected="True" />
+                      </Node>
                     </Node>
                     <Node name="PriorityTargeting" expanded="True">
                       <Node name="TargetSelection" expanded="True" />

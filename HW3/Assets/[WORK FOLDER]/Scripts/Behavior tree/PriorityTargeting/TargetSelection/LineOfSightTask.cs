@@ -24,6 +24,7 @@ class LineOfSightTask : Task
                     survivor.blackboard.visibleEnemies.Add(enemy);
             }
         }
+        Debug.Log(enemies.Count);
         if (enemies.Count > 0)
             return true;
         return false;

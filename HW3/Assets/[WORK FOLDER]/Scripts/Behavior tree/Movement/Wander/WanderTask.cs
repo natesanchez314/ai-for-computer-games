@@ -9,6 +9,13 @@ class WanderTask : Task
 
     public override bool Run(Survivor_AI survivor)
     {
-        return false;
+        Debug.Log("Wandering");
+        return base.Run(survivor);
+    }
+
+    protected override void InitChildren()
+    {
+        AddTask(new SetNewWanderHeadingTask());
+        AddTask(new WanderMoveTask());
     }
 }

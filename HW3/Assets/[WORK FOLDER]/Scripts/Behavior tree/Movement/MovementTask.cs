@@ -13,7 +13,7 @@ class MovementTask : SelectorTask
     protected override void InitChildren()
     {
         AddTask(new AvoidZombiesTask());
-        AddTask(new GetLoot());
-        //AddTask(new WanderTask());
+        //AddTask(new GetLoot());
+        AddTask(new WanderTask());
     }
 }

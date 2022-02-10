@@ -7,7 +7,6 @@ class PriorityTargetingTask : Task
 
     public override bool Run(Survivor_AI survivor)
     {
-        Debug.Log("Targeting");
         return base.Run(survivor);
     }
 

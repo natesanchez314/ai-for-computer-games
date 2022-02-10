@@ -17,6 +17,9 @@ class Blackboard_Survivor : Task
 
     public Dictionary<WEAPON_TYPE, float> weaponRanges;
 
+    public Vector3 heading;
+    public Vector3 randomHeading;
+
     public Blackboard_Survivor()
     {
         visibleEnemies = new List<Enemy>();
@@ -30,6 +33,9 @@ class Blackboard_Survivor : Task
 
         weaponRanges = new Dictionary<WEAPON_TYPE, float>();
         preferredWeapon = WEAPON_TYPE.PISTOL;
+
+        heading = Vector3.zero;
+        heading = Vector3.zero;
     }
 
     public void SetClosestEnemy(Enemy enemy, float dist)

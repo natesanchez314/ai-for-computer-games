@@ -17,6 +17,8 @@ class MoveToLootTask : Task
                 survivor.MoveTo(loot.transform.position);
                 return true;
             }
+
+            //Vector3 heading = survivor.transform.position - survivor.blackboard.closestLoot.transform.position;
         }
         return false;
     }

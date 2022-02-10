@@ -17,6 +17,7 @@ class GetLoot : Task
     {
         AddTask(new FindClosestLoot());
         AddTask(new MoveToLootTask());
+        //AddTask(new MoveTask());
         AddTask(new PickUpLootTask());
     }
 }
