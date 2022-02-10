@@ -9,7 +9,15 @@ class PickUpLootTask : Task
 
     public override bool Run(Survivor_AI survivor)
     {
-        // Todo
+        if (survivor.blackboard.closestEnemy == null)
+        {
+            Loot loot = survivor.blackboard.closestLoot;
+            if (loot != null)
+            {
+                survivor.MoveTo(loot.transform.position);
+                return true;
+            }
+        }
         return false;
     }
 }

@@ -11,8 +11,16 @@ class FireWeaponTask : Task
         Enemy target = survivor.blackboard.priorityTarget;
         if (target != null)
         {
-            survivor.Fire(survivor.blackboard.priorityTarget.transform.position);
-            return true;
+            Vector3 targetPos = target.transform.position;
+            Vector3 surviverPos = survivor.transform.position;
+            float dist = (targetPos - surviverPos).magnitude;
+
+            if (dist < survivor.GetCurrentWeapon().getRange())
+            {
+                if (target.state == EnemyState.NORMAL)
+                    survivor.Fire(targetPos);
+                return true;
+            }
         }
         return false;
     }

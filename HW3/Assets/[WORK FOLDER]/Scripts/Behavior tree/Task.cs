@@ -54,6 +54,8 @@ class SelectorTask : Task
 
     public override bool Run(Survivor_AI survivor)
     {
+        if (children.Count == 0)
+            InitChildren();
         foreach (Task child in children)
         {
             if (child.Run(survivor))
@@ -70,6 +72,8 @@ class SequenceTask : Task
 
     public override bool Run(Survivor_AI survivor)
     {
+        if (children.Count == 0)
+            InitChildren();
         foreach (Task child in children)
         {
             if (!child.Run(survivor))
@@ -86,6 +90,8 @@ class RandomSelectorTask : Task
 
     public override bool Run(Survivor_AI survivor)
     {
+        if (children.Count == 0)
+            InitChildren();
         if (children.Count > 0)
         {
             int index = Random.Range(0, children.Count - 1);
@@ -102,6 +108,8 @@ class NonDeterministicSelectorTask : SelectorTask
 
     public override bool Run(Survivor_AI survivor)
     {
+        if (children.Count == 0)
+            InitChildren();
         Shuffle();
         return base.Run(survivor);
     }
@@ -114,6 +122,8 @@ class NonDeterministicSequenceTask : SequenceTask
 
     public override bool Run(Survivor_AI survivor)
     {
+        if (children.Count == 0)
+            InitChildren();
         Shuffle();
         return base.Run(survivor);
     }
