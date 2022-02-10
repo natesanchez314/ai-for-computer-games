@@ -13,6 +13,7 @@ class WeaponsTask : Task
 
     protected override void InitChildren()
     {
+        AddTask(new WeaponSwappingTask());
         AddTask(new FireWeaponTask());
     }
 }
