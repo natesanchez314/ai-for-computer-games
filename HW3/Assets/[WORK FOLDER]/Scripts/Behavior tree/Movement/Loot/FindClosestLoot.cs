@@ -15,8 +15,8 @@ class FindClosestLoot : Task
         foreach (Loot l in loot)
         {
             Vector3 survivorPos = survivor.transform.position;
-            Vector3 enemyPos = survivor.transform.position;
-            Vector3 dir = enemyPos - survivorPos;
+            Vector3 lootPos = l.transform.position;
+            Vector3 dir = lootPos - survivorPos;
             float dist = dir.magnitude;
             if (closestLoot == null)
             {
@@ -29,7 +29,7 @@ class FindClosestLoot : Task
                 closestDist = dist;
             }
         }
-        survivor.blackboard.closestLoot = closestLoot;
+        survivor.blackboard.SetClosestLoot(closestLoot, closestDist);
         if (closestLoot == null)
             return false;
         return true;

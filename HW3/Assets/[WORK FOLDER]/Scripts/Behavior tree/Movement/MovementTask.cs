@@ -14,5 +14,6 @@ class MovementTask : SelectorTask
     {
         AddTask(new AvoidZombiesTask());
         AddTask(new GetLoot());
+        //AddTask(new WanderTask());
     }
 }

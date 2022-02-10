@@ -8,8 +8,11 @@ class EquipGrenadeLauncherTask : Task
 
     public override bool Run(Survivor_AI survivor)
     {
-        Debug.Log("    Equipping Grenade launcher");
-        survivor.SwitchWeapon(WEAPON_TYPE.GRENADE_LAUNCHER);
-        return true;
+        if (GameManager.GetAmmo(WEAPON_TYPE.GRENADE_LAUNCHER) > 0 && survivor.blackboard.preferredWeapon == WEAPON_TYPE.GRENADE_LAUNCHER)
+        {
+            survivor.SwitchWeapon(WEAPON_TYPE.GRENADE_LAUNCHER);
+            return true;
+        }
+        return false;
     }
 }

@@ -28,8 +28,8 @@ class UpdateClosestEnemyTask : Task
                 closestDist = dist;
             }
         }
-        survivor.blackboard.closestEnemy = closestEnemy;
-        survivor.blackboard.priorityTarget = closestEnemy;
+        survivor.blackboard.SetClosestEnemy(closestEnemy, closestDist);
+        survivor.blackboard.SetPriorityTarget(closestEnemy, closestDist);
         if (closestEnemy == null)
             return false;
         return true;

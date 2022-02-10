@@ -9,14 +9,14 @@ class GetLoot : Task
 
     public override bool Run(Survivor_AI survivor)
     {
-        if (children.Count == 0)
-            InitChildren();
+        //Debug.Log("Getting loot");
         return base.Run(survivor);
     }
 
     protected override void InitChildren()
     {
         AddTask(new FindClosestLoot());
+        AddTask(new MoveToLootTask());
         AddTask(new PickUpLootTask());
     }
 }

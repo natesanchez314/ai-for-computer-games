@@ -7,7 +7,6 @@ class EquipPistolTask : Task
 
     public override bool Run(Survivor_AI survivor)
     {
-        Debug.Log("    Equipping pistol");
         survivor.SwitchWeapon(WEAPON_TYPE.PISTOL);
         return true;
     }

@@ -7,8 +7,11 @@ class EquipSniperTask : Task
 
     public override bool Run(Survivor_AI survivor)
     {
-        Debug.Log("    Equipping sniper rifle");
-        survivor.SwitchWeapon(WEAPON_TYPE.SNIPER);
-        return true;
+        if (GameManager.GetAmmo(WEAPON_TYPE.SNIPER) > 0 && survivor.blackboard.preferredWeapon == WEAPON_TYPE.SNIPER)
+        {
+            survivor.SwitchWeapon(WEAPON_TYPE.SNIPER);
+            return true;
+        }
+        return false;
     }
 }

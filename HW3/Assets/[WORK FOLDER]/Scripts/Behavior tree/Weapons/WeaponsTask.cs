@@ -13,6 +13,8 @@ class WeaponsTask : Task
 
     protected override void InitChildren()
     {
+        Debug.Log("here");
+        //AddTask(new DetermineBestWeaponTask());
         AddTask(new WeaponSwappingTask());
         AddTask(new FireWeaponTask());
     }

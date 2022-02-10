@@ -1,17 +1,15 @@
 ﻿<Properties StartupConfiguration="{54D378FC-8661-A00A-D6EB-1A5089C140F2}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/[WORK FOLDER]/Scripts/Behavior tree/Weapons/Firing/FireWeaponTask.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/[GAME ASSETS] - Do Not Modify/Scripts/Core/GameManager.cs">
     <Files>
-      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/PriorityTargeting/UpdateTargetTask.cs" Line="37" Column="63" />
-      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/PriorityTargeting/PriorityTargetingTask.cs" Line="18" Column="11" />
-      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/BehaviorTreeSurvivor.cs" Line="15" Column="36" />
-      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Blackboard_Survivor.cs" Line="6" Column="1" />
-      <File FileName="Assets/[WORK FOLDER]/Scripts/Survivor_AI.cs" Line="34" Column="6" />
-      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Task.cs" Line="31" Column="38" />
-      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/AvoidZombiesTask.cs" Line="28" Column="1" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/Loot/PickUpLootTask.cs" Line="19" Column="1" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/Loot/FindClosestLoot.cs" Line="33" Column="26" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/Wander/WanderTask.cs" Line="1" Column="1" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Task.cs" Line="1" Column="1" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/Loot/MoveToLootTask.cs" Line="1" Column="1" />
       <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/MovementTask.cs" Line="1" Column="1" />
-      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Weapons/WeaponTask.cs" Line="5" Column="18" />
-      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Weapons/NewMonoBehaviour.cs" Line="11" Column="1" />
-      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/PriorityTargeting/TargetSelection/TargetStrongZombieTask.cs" Line="19" Column="1" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Behavior tree/Movement/Loot/GetLoot.cs" Line="12" Column="11" />
+      <File FileName="Assets/[WORK FOLDER]/Scripts/Survivor_AI.cs" Line="58" Column="27" />
+      <File FileName="Assets/[GAME ASSETS] - Do Not Modify/Scripts/Core/GameManager.cs" Line="468" Column="21" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,8 +18,9 @@
             <Node name="Assets" expanded="True">
               <Node name="[GAME ASSETS] - Do Not Modify" expanded="True">
                 <Node name="Scripts" expanded="True">
-                  <Node name="Enemies" expanded="True" />
-                  <Node name="Survivor" expanded="True" />
+                  <Node name="Core" expanded="True">
+                    <Node name="GameManager.cs" selected="True" />
+                  </Node>
                 </Node>
               </Node>
               <Node name="[WORK FOLDER]" expanded="True">
@@ -30,14 +29,15 @@
                     <Node name="Movement" expanded="True">
                       <Node name="Avoidance" expanded="True" />
                       <Node name="Loot" expanded="True" />
+                      <Node name="Wander" expanded="True" />
                     </Node>
                     <Node name="PriorityTargeting" expanded="True">
                       <Node name="TargetSelection" expanded="True" />
                     </Node>
                     <Node name="Weapons" expanded="True">
-                      <Node name="Firing" expanded="True">
-                        <Node name="FireWeaponTask.cs" selected="True" />
-                      </Node>
+                      <Node name="Firing" expanded="True" />
+                      <Node name="WeaponDetermination" expanded="True" />
+                      <Node name="WeaponEquipping" expanded="True" />
                     </Node>
                   </Node>
                 </Node>
@@ -50,7 +50,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="8fa4e8e7-ce3b-4e23-af02-c204d392c8c2" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="8311e940-3b27-4af5-878b-ba5a5e9b6d69" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

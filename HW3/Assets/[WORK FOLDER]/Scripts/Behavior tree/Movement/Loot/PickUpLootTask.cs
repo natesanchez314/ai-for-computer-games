@@ -9,12 +9,12 @@ class PickUpLootTask : Task
 
     public override bool Run(Survivor_AI survivor)
     {
-        if (survivor.blackboard.closestEnemy == null)
+        if (survivor.blackboard.closestLoot != null)
         {
-            Loot loot = survivor.blackboard.closestLoot;
-            if (loot != null)
+            if (survivor.blackboard.closestLootDist < 5.0f && survivor.blackboard.closestLootDist != 0.0f)
             {
-                survivor.MoveTo(loot.transform.position);
+                GameManager.PickupLoot(survivor.blackboard.closestLoot);
+                Debug.Log("Picking up loot");
                 return true;
             }
         }

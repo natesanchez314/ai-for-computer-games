@@ -7,8 +7,11 @@ class EquipAssaultTask : Task
 
     public override bool Run(Survivor_AI survivor)
     {
-        Debug.Log("    Equipping assault rifle");
-        survivor.SwitchWeapon(WEAPON_TYPE.ASSAULT);
-        return true;
+        if (GameManager.GetAmmo(WEAPON_TYPE.ASSAULT) > 0 && survivor.blackboard.preferredWeapon == WEAPON_TYPE.ASSAULT)
+        {
+            survivor.SwitchWeapon(WEAPON_TYPE.ASSAULT);
+            return true;
+        }
+        return false;
     }
 }

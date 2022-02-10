@@ -7,8 +7,11 @@ class EquipShotgunTask : Task
 
     public override bool Run(Survivor_AI survivor)
     {
-        Debug.Log("    Equipping shotgun");
-        survivor.SwitchWeapon(WEAPON_TYPE.SHOTGUN);
-        return true;
+        if (GameManager.GetAmmo(WEAPON_TYPE.SHOTGUN) > 0 && survivor.blackboard.preferredWeapon == WEAPON_TYPE.SHOTGUN)
+        {
+            survivor.SwitchWeapon(WEAPON_TYPE.SHOTGUN);
+            return true;
+        }
+        return false;
     }
 }
