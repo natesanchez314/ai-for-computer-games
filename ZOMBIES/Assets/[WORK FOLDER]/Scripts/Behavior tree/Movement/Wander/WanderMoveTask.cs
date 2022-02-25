@@ -9,7 +9,7 @@ class WanderMoveTask : Task
 
     public override bool Run(Survivor_AI survivor)
     {
-        survivor.MoveTo(survivor.blackboard.randomHeading);
+        survivor.MoveTo(survivor.blackboard.targetPathNode.transform.position);
         return true;
     }
 }

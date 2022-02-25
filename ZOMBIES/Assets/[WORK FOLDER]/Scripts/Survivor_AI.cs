@@ -17,6 +17,7 @@ class Survivor_AI : MonoBehaviour
         survivor = GetComponent<Survivor>();
         BT_Basic = new BehaviorTreeSurvivor();
         blackboard = new Blackboard_Survivor();
+        PathFinder.CreateGraph();
     }
 
     // Update is called once per frame

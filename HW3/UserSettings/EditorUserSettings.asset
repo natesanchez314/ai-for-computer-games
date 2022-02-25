@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!162 &1
+EditorUserSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 4
+  m_ConfigSettings:
+    RecentlyUsedScenePath-0:
+      value: 22424703114646680e0b0227036c6c111b07142f1f2b233e2867083debf42d
+      flags: 0
+    RecentlyUsedScenePath-1:
+      value: 22424703114646770818092e036c6c111b07142f1f2b233e2867083debf42d
+      flags: 0
+    RecentlyUsedScenePath-2:
+      value: 22424703114646770818092e036c6b1f01120a6a082d2035233a1873cee5223deea805e8ea2a33390a01ea3201701431fb1e10
+      flags: 0
+    RecentlyUsedScenePath-3:
+      value: 200b1b3316501b484219052e1c2410341304133e233869170c045d60b5b67b10edea33fee828342f762ae03101290e2df94a5b44de04070e0601ef0551ad5f3202d61dd109873319dd1c10dd823fd0f0dcd59affd6e2f3c1
+      flags: 0
+    RecentlyUsedScenePath-4:
+      value: 224247031146466c040200650363791f1a131d386c65661e0269291cd7c31c01add423fbf133293d3525ee310101202ce10f1d18b938090e1f0bee4122fe1d031dc02bc61fc61a52de1715dad4
+      flags: 0
+    RecentlyUsedScenePath-5:
+      value: 22424703114646770818092e036c73150012146a7d66333e243d04
+      flags: 0
+    RecentlyUsedScenePath-6:
+      value: 2242470311464660212b3a073c10625f22180f2f3e6802352b2c1320e7a0183df4e23aa6d43b322c3507dc3f01300471e704001fef
+      flags: 0
+    RecentlyUsedScenePath-7:
+      value: 2242470311464660212b3a073c10625f3a120e2f2068777e38271427fb
+      flags: 0
+    vcPerforcePassword:
+      value: 
+      flags: 1
+    vcPerforceServer:
+      value: 135446000a470a5e430a1c375e275a0017021464292c336a7c7f4b65
+      flags: 0
+    vcPerforceUsername:
+      value: 
+      flags: 0
+    vcPerforceWorkspace:
+      value: 
+      flags: 0
+    vcSharedLogLevel:
+      value: 0d5e400f0650
+      flags: 0
+  m_VCAutomaticAdd: 1
+  m_VCDebugCom: 0
+  m_VCDebugCmd: 0
+  m_VCDebugOut: 0
+  m_SemanticMergeMode: 2
+  m_VCShowFailedCheckout: 1
+  m_VCOverwriteFailedCheckoutAssets: 1
+  m_VCProjectOverlayIcons: 1
+  m_VCHierarchyOverlayIcons: 1
+  m_VCOtherOverlayIcons: 1
+  m_VCAllowAsyncUpdate: 1

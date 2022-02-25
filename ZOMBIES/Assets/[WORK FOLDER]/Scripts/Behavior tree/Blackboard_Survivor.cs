@@ -17,6 +17,11 @@ class Blackboard_Survivor : Task
 
     public Dictionary<WEAPON_TYPE, float> weaponRanges;
 
+    public PathNode targetPathNode;
+    public PathNode lastVisited;
+    public List<PathNode> path;
+    public bool needsPath;
+
     public Vector3 heading;
     public Vector3 randomHeading;
 
@@ -36,6 +41,7 @@ class Blackboard_Survivor : Task
 
         heading = Vector3.zero;
         heading = Vector3.zero;
+        needsPath = true;
     }
 
     public void SetClosestEnemy(Enemy enemy, float dist)

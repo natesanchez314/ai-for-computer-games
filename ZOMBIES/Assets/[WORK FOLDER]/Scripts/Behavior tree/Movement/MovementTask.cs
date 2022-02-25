@@ -10,8 +10,9 @@ class MovementTask : SelectorTask
 
     protected override void InitChildren()
     {
-        AddTask(new AvoidZombiesTask());
-        AddTask(new GetLoot());
+        //AddTask(new AvoidZombiesTask());
+        AddTask(new GetLoot());  // Path finding
+        // AddTask(); // Steering
         AddTask(new WanderTask());
     }
 }
