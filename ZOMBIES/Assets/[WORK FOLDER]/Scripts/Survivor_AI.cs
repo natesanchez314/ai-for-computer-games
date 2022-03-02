@@ -59,4 +59,9 @@ class Survivor_AI : MonoBehaviour
     {
         return survivor.GetWeaponList();
     }
+
+    public Survivor GetSurvivor()
+    {
+        return this.survivor;
+    }
 }

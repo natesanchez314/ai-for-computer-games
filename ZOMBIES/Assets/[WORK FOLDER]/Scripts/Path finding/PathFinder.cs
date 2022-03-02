@@ -78,7 +78,6 @@ public class PathFinder
 
         PathHelper curr = new PathHelper(start);
         visited.Add(start);
-        int i = 0;
         while (curr.node != goal)
         {
             List<PathNode> neighbors = curr.node.neighbors;
@@ -93,19 +92,10 @@ public class PathFinder
                     queue.Add(ph);
                 }
             }
-            if (queue.Count <= 1)
-            {
-                Debug.Log("Here");
-            }
             queue.Sort(PathHelper.ComparePathHelpers);
             curr = queue[0];
             queue.RemoveAt(0);
-            i++;
-            if (i == 50)
-            {
-                Debug.Log("Out of hand!!!!");
-                //return path;
-            }
+           
         }
 
         Debug.Log("Found path!!!");

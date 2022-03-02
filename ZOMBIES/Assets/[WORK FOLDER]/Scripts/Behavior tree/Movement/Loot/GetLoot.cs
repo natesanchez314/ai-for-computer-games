@@ -17,7 +17,7 @@ class GetLoot : SequenceTask
     {
         AddTask(new FindClosestLoot());
         AddTask(new MoveToLootTask());
-        //AddTask(new MoveTask());
+        //AddTask(new SteerTask());
         AddTask(new PickUpLootTask());
     }
 }
