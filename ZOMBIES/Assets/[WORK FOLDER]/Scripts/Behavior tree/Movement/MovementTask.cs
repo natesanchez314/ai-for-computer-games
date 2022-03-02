@@ -12,7 +12,8 @@ class MovementTask : SelectorTask
     {
         //AddTask(new AvoidZombiesTask());
         AddTask(new GetLoot());  // Path finding
-        // AddTask(); // Steering
+        AddTask(new AvoidZombiesTask());
+        //AddTask(); // Steering
         AddTask(new WanderTask());
     }
 }

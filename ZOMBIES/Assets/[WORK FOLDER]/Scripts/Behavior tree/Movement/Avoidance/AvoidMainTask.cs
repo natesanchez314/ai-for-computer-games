@@ -24,7 +24,7 @@ class AvoidMainTask : Task
             heading = survivorPos - heading;
 
             survivor.blackboard.heading = heading;
-            //survivor.MoveTo(heading);
+            survivor.MoveTo(heading);
             return true;
         }
         //survivor.blackboard.heading = survivor.transform.position;

@@ -1,16 +1,70 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PathFinder
 {
+    class PathHelper : IComparable<PathHelper>
+    {
+        public PathHelper prev;
+        public PathNode node;
+        public float cost;
+        public float h;
+
+        public PathHelper(PathNode node)
+        {
+            this.prev = null;
+            this.node = node;
+            this.cost = 0.0f;
+        }
+
+        public PathHelper(PathHelper prev, PathNode node)
+        {
+            this.prev = prev;
+            this.node = node;
+            this.cost = 0.0f;
+        }
+
+        public void SetCost(float cost)
+        {
+            this.cost = cost;
+        }
+
+        public void SetH(float h)
+        {
+            this.h = h;
+        }
+
+        public int CompareTo(PathHelper other)
+        {
+            if (this.cost < other.cost)
+                return -1;
+            else if (this.cost > other.cost)
+                return 1;
+            else
+            {
+                if (this.h < other.h)
+                    return -1;
+                else if (this.h > other.h)
+                    return 1;
+                else
+                    return 0;
+            }
+        }
+
+        public static int ComparePathHelpers(PathHelper a, PathHelper b)
+        {
+            return a.CompareTo(b);
+        }
+    }
+
     private static PathFinder instance;
     PathNode[] pathNodes;
     bool createdGraph;
 
     private PathFinder()
     {
-        pathNodes = Object.FindObjectsOfType<PathNode>();
+        pathNodes = UnityEngine.Object.FindObjectsOfType<PathNode>();
         createdGraph = false;
     }
 
@@ -18,16 +72,50 @@ public class PathFinder
     {
         if (instance == null)
             instance = new PathFinder();
-        List<PathNode> path = new List<PathNode>();
-        path.Add(start);
-        PathNode currNode = start;
-        PathNode lastNode = null;
-        while (currNode != goal)
+        List<PathNode> path = new List<PathNode>(); // This is the path we return
+        List<PathHelper> queue = new List<PathHelper>();
+        HashSet<PathNode> visited = new HashSet<PathNode>();
+
+        PathHelper curr = new PathHelper(start);
+        visited.Add(start);
+        int i = 0;
+        while (curr.node != goal)
         {
-            currNode = FindNextBestNode(start, currNode, lastNode, goal);
-            path.Add(currNode);
+            List<PathNode> neighbors = curr.node.neighbors;
+            foreach (PathNode pathNode in neighbors)
+            {
+                if (!visited.Contains(pathNode))
+                {
+                    visited.Add(pathNode);
+                    PathHelper ph = new PathHelper(curr, pathNode);
+                    ph.SetCost(GetCost(curr.node, start, goal));
+                    ph.SetH(GetH(curr.node, goal));
+                    queue.Add(ph);
+                }
+            }
+            if (queue.Count <= 1)
+            {
+                Debug.Log("Here");
+            }
+            queue.Sort(PathHelper.ComparePathHelpers);
+            curr = queue[0];
+            queue.RemoveAt(0);
+            i++;
+            if (i == 50)
+            {
+                Debug.Log("Out of hand!!!!");
+                //return path;
+            }
         }
-        path.Add(goal);
+
+        Debug.Log("Found path!!!");
+
+        // Add to our path
+        while (curr.node != start)
+        {
+            path.Insert(0, curr.node);
+            curr = curr.prev;
+        }
         return path;
     }
 
@@ -59,6 +147,25 @@ public class PathFinder
             }
             return bestNode;
         }
+    }
+
+    private static float GetCost(PathNode node, PathNode startNode, PathNode endNode)
+    {
+        return GetG(node, startNode) + GetH(node, endNode);
+    }
+
+    private static float GetG(PathNode node, PathNode startNode)
+    {
+        float xDiff = node.transform.position.x - startNode.transform.position.x;
+        float zDiff = node.transform.position.z - startNode.transform.position.z;
+        return (xDiff * xDiff) + (zDiff * zDiff);
+    }
+
+    private static float GetH(PathNode node, PathNode endNode)
+    {
+        float xDiff = node.transform.position.x - endNode.transform.position.x;
+        float zDiff = node.transform.position.z - endNode.transform.position.z;
+        return (xDiff * xDiff) + (zDiff * zDiff);
     }
 
     public static PathNode FindClosestNodeToTarget(Vector3 target)
